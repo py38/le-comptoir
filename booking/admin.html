@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace restaurant — Le Comptoir</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../assets/img/logo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="booking.css">
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="bk-top">
+  <span class="bk-brand"><img src="../assets/img/logo.jpeg" alt="Le Comptoir"><span>Le Comptoir · Admin</span></span>
+  <button class="bk-back" id="logoutBtn" hidden>Déconnexion →</button>
+</header>
+
+<div class="bk-demo" id="demoBadge" hidden>Mode démonstration — données locales à cet appareil</div>
+
+<!-- LOGIN -->
+<div class="adm-login" id="loginView">
+  <h1>Espace restaurant</h1>
+  <p id="loginHint">Connectez-vous pour gérer l'agenda.</p>
+  <form class="bk-form" id="loginForm">
+    <label id="emailWrap">Email<input type="email" id="admEmail" placeholder="email@lecomptoir.ci"></label>
+    <label>Mot de passe<input type="password" id="admPw" placeholder="••••••••" required></label>
+    <button type="submit" class="btn btn--gold">Se connecter</button>
+    <p class="bk-msg" id="loginMsg"></p>
+  </form>
+</div>
+
+<!-- DASHBOARD -->
+<main class="bk-wrap" id="dashView" hidden>
+  <div class="adm-tabs">
+    <button class="active" data-tab="agenda">Agenda &amp; créneaux</button>
+    <button data-tab="resa">Réservations</button>
+  </div>
+
+  <!-- AGENDA -->
+  <section class="adm-panel active" data-panel="agenda">
+    <form class="adm-addform" id="addForm">
+      <label>Date<input type="date" id="sDate" required></label>
+      <label>Heure<input type="time" id="sTime" value="20:00" required></label>
+      <label>Couverts<input type="number" id="sCap" min="1" value="40" required style="width:90px"></label>
+      <button type="submit" class="btn btn--gold" style="padding:.8rem 1.4rem">Ajouter le créneau</button>
+      <p class="bk-msg" id="addMsg" style="width:100%"></p>
+    </form>
+    <table class="tbl" id="slotsTbl">
+      <thead><tr><th>Date</th><th>Heure</th><th>Couverts</th><th>Réservés</th><th>Restant</th><th>État</th><th>Actions</th></tr></thead>
+      <tbody id="slotsBody"></tbody>
+    </table>
+    <p class="adm-empty" id="slotsEmpty" hidden>Aucun créneau à venir. Ajoutez-en un ci-dessus.</p>
+  </section>
+
+  <!-- RÉSERVATIONS -->
+  <section class="adm-panel" data-panel="resa">
+    <table class="tbl" id="resaTbl">
+      <thead><tr><th>Date</th><th>Heure</th><th>Client</th><th>Téléphone</th><th>Pers.</th><th>Note</th><th></th></tr></thead>
+      <tbody id="resaBody"></tbody>
+    </table>
+    <p class="adm-empty" id="resaEmpty" hidden>Aucune réservation pour le moment.</p>
+  </section>
+</main>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="store.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

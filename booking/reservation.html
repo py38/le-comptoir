@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réserver une table — Le Comptoir</title>
+<meta name="description" content="Réservez votre table au Comptoir, Abidjan. Choisissez votre date et votre créneau en temps réel.">
+<link rel="icon" href="../assets/img/logo.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="booking.css">
+</head>
+<body>
+<div class="grain"></div>
+
+<header class="bk-top">
+  <a href="../index.html" class="bk-brand">
+    <img src="../assets/img/logo.jpeg" alt="Le Comptoir">
+    <span>Le Comptoir</span>
+  </a>
+  <a href="../index.html" class="bk-back">← Retour au site</a>
+</header>
+
+<div class="bk-demo" id="demoBadge" hidden>Mode démonstration — réservations enregistrées sur cet appareil uniquement</div>
+
+<main class="bk-wrap">
+  <div class="bk-head">
+    <span class="kicker">Réservation</span>
+    <h1>Réservez votre table</h1>
+    <p>Choisissez une date, puis un créneau disponible. Confirmation immédiate.</p>
+  </div>
+
+  <div class="bk-grid">
+    <!-- Calendrier -->
+    <section class="bk-card">
+      <div class="cal-head">
+        <button class="cal-nav" id="calPrev" aria-label="Mois précédent">‹</button>
+        <h2 id="calTitle">—</h2>
+        <button class="cal-nav" id="calNext" aria-label="Mois suivant">›</button>
+      </div>
+      <div class="cal-dow"><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span></div>
+      <div class="cal-days" id="calDays"></div>
+    </section>
+
+    <!-- Créneaux + formulaire -->
+    <section class="bk-card" id="rightPanel">
+      <div id="slotsView">
+        <div class="slot-date" id="slotDate">Sélectionnez une date</div>
+        <div class="slots" id="slotsList"></div>
+        <p class="bk-empty" id="slotsEmpty" hidden>Aucun créneau disponible ce jour-là.</p>
+
+        <form class="bk-form" id="bkForm" hidden>
+          <div class="row">
+            <label>Nom complet<input type="text" id="fName" placeholder="Votre nom" required></label>
+            <label>Téléphone<input type="tel" id="fPhone" placeholder="07 ..." required></label>
+          </div>
+          <div class="row">
+            <label>Nombre de personnes
+              <select id="fParty">
+                <option>1</option><option selected>2</option><option>3</option><option>4</option>
+                <option>5</option><option>6</option><option>7</option><option>8</option>
+                <option>9</option><option>10</option><option value="11">11 +</option>
+              </select>
+            </label>
+            <label>Occasion <small style="text-transform:none;letter-spacing:0;color:var(--cream-dim)">(optionnel)</small>
+              <input type="text" id="fNote" placeholder="Anniversaire, allergies…">
+            </label>
+          </div>
+          <button type="submit" class="btn btn--gold" id="bkSubmit">Confirmer la réservation</button>
+          <p class="bk-msg" id="bkMsg"></p>
+        </form>
+      </div>
+
+      <!-- Confirmation -->
+      <div class="bk-confirm" id="confirmView" hidden>
+        <div class="check">✓</div>
+        <h3>Réservation confirmée</h3>
+        <p>Au plaisir de vous accueillir au Comptoir.</p>
+        <div class="recap" id="recap"></div>
+        <button class="btn btn--ghost" id="againBtn" type="button">Nouvelle réservation</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="store.js"></script>
+<script src="reservation.js"></script>
+</body>
+</html>
