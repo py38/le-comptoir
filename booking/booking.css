@@ -280,3 +280,29 @@
   .cx-stat b{font-size:1.2rem}
   .mv-daylist h5{font-size:1.1rem}
 }
+
+/* ============================================================
+   Timeline robuste (jour/semaine) — 7 jours visibles, lignes pleines
+   ============================================================ */
+.tlx{border:1px solid var(--line);overflow:hidden}
+.tlx-head{display:grid;position:sticky;top:0;z-index:3;background:var(--navy-2)}
+.tlx-corner{border-bottom:1px solid var(--line)}
+.tlx-dh{padding:.5rem .1rem;text-align:center;border-left:1px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer}
+.tlx-dh b{font-family:var(--serif);font-size:.92rem;color:var(--cream);display:block;line-height:1.1;text-transform:capitalize}
+.tlx-dh span{font-size:.56rem;letter-spacing:.06em;color:var(--gold-soft)}
+.tlx-dh.today b,.tlx-dh.today span{color:var(--gold)}
+.tlx-body{display:grid;max-height:60vh;overflow-y:auto;overflow-x:hidden}
+.tlx-gutter{border-right:1px solid var(--line)}
+.tlx-hh{height:52px;font-size:.56rem;color:var(--cream-dim);text-align:right;padding-right:.35rem;box-sizing:border-box;transform:translateY(-.55em)}
+.tlx-col{position:relative;border-left:1px solid var(--line);
+  background-image:repeating-linear-gradient(to bottom,rgba(200,164,77,.10) 0 1px,transparent 1px 52px)}
+.tlx-col:first-of-type{border-left:0}
+.tlx-block{position:absolute;left:2px;right:2px;background:rgba(29,74,82,.92);border-left:3px solid var(--gold);border-radius:3px;padding:.2rem .3rem;overflow:hidden;cursor:pointer;transition:.2s}
+.tlx-block:hover{background:rgba(29,74,82,1)}
+.tlx-block b{display:block;font-size:.66rem;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
+.tlx-block span{font-size:.55rem;color:var(--gold-soft)}
+@media(max-width:560px){
+  .tlx-dh b{font-size:.72rem}
+  .tlx-block b{font-size:.58rem}
+  .tlx-block span{display:none}
+}

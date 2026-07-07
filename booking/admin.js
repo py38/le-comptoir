@@ -71,7 +71,7 @@
     var sx = null, sy = null;
     canvas.addEventListener('touchstart', function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
     canvas.addEventListener('touchend', function (e) {
-      if (sx == null || vView === 'week') { sx = null; return; }
+      if (sx == null) { sx = null; return; }
       var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
       if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
       sx = null;
@@ -197,55 +197,60 @@
   function renderDay() {
     var ds = ymd(cursor);
     store.getBookingsRange(ds, ds).then(function (list) {
-      var html = '<div class="tl-wrap"><div class="tl-hours">' + hourLabels() + '</div>' +
-        '<div class="tl-cols" style="grid-template-columns:1fr"><div class="tl-col">' + lineBg() +
-        blocks(list) + '</div></div></div>';
-      var canvas = document.getElementById('cxCanvas'); canvas.innerHTML = html;
-      bindBlocks(canvas);
+      renderTimeline([new Date(cursor)], groupByDate(list));
     });
   }
 
-  /* ---------- SEMAINE ---------- */
+  /* ---------- SEMAINE (7 jours visibles, comme iPhone) ---------- */
   function renderWeek() {
     var s = startOfWeek(cursor);
     var days = []; for (var i = 0; i < 7; i++) days.push(addDays(s, i));
     store.getBookingsRange(ymd(days[0]), ymd(days[6])).then(function (list) {
-      var byDate = groupByDate(list);
-      var heads = '<div class="tl-head" style="grid-template-columns:52px repeat(7,1fr)"><div class="tl-headspacer"></div>';
-      days.forEach(function (d) {
-        heads += '<div class="tl-colhead"><b>' + d.toLocaleDateString('fr-FR', { weekday: 'short' }) + '</b><span>' + d.getDate() + '</span></div>';
-      });
-      heads += '</div>';
-      var body = '<div class="tl-wrap"><div class="tl-hours">' + hourLabels() + '</div><div class="tl-cols" style="grid-template-columns:repeat(7,1fr)">';
-      days.forEach(function (d) { body += '<div class="tl-col" data-day="' + ymd(d) + '">' + lineBg() + blocks(byDate[ymd(d)] || []) + '</div>'; });
-      body += '</div></div>';
-      var canvas = document.getElementById('cxCanvas'); canvas.innerHTML = heads + body;
-      bindBlocks(canvas);
-      canvas.querySelectorAll('.tl-colhead').forEach(function (h, idx) {
-        h.style.cursor = 'pointer';
-        h.addEventListener('click', function () { cursor = new Date(days[idx]); vView = 'day'; setActiveView('day'); refresh(); });
-      });
+      renderTimeline(days, groupByDate(list));
     });
   }
 
-  function hourLabels() {
-    var h = ''; for (var i = START_H; i < END_H; i++) h += '<div class="h" style="height:' + HH + 'px">' + pad(i) + ':00</div>'; return h;
-  }
-  function lineBg() {
-    var l = '<div class="lines">'; for (var i = START_H; i < END_H; i++) l += '<i></i>'; return l + '</div>';
-  }
-  function blocks(list) {
-    return list.map(function (b) {
-      var top = (toMin(b.time) - START_H * 60) / 60 * HH;
-      if (top < 0) top = 0;
-      return '<div class="resa-block" data-id="' + b.id + '" style="top:' + top + 'px;height:44px">' +
-        '<b>' + esc(b.name) + '</b><span>' + b.time + ' · ' + b.party_size + ' pers.</span></div>';
-    }).join('');
-  }
-  function bindBlocks(canvas) {
-    canvas.querySelectorAll('.resa-block').forEach(function (el) {
-      el.addEventListener('click', function () { openBooking(el.getAttribute('data-id')); });
+  // Construit une timeline (jour ou semaine) : en-tête aligné + lignes pleine hauteur
+  function renderTimeline(days, byDate) {
+    var total = (END_H - START_H) * HH;
+    var gc = '46px repeat(' + days.length + ',1fr)';
+
+    var head = '<div class="tlx-head" style="grid-template-columns:' + gc + '"><div class="tlx-corner"></div>';
+    days.forEach(function (d) {
+      head += '<div class="tlx-dh' + (ymd(d) === today() ? ' today' : '') + '" data-day="' + ymd(d) + '">' +
+        '<b>' + d.toLocaleDateString('fr-FR', { weekday: 'short' }).replace('.', '') + '</b><span>' + d.getDate() + '</span></div>';
     });
+    head += '</div>';
+
+    var gutter = '<div class="tlx-gutter" style="height:' + total + 'px">';
+    for (var i = START_H; i < END_H; i++) gutter += '<div class="tlx-hh">' + pad(i) + 'h</div>';
+    gutter += '</div>';
+
+    var body = '<div class="tlx-body" style="grid-template-columns:' + gc + '">' + gutter;
+    days.forEach(function (d) {
+      var list = (byDate[ymd(d)] || []).slice().sort(function (a, b) { return a.time < b.time ? -1 : 1; });
+      body += '<div class="tlx-col" data-day="' + ymd(d) + '" style="height:' + total + 'px">' +
+        list.map(function (b) {
+          var top = (toMin(b.time) - START_H * 60) / 60 * HH; if (top < 0) top = 0;
+          return '<div class="tlx-block" data-id="' + b.id + '" style="top:' + top + 'px;height:' + (HH - 6) + 'px">' +
+            '<b>' + esc(b.name) + '</b><span>' + b.time + ' · ' + b.party_size + '</span></div>';
+        }).join('') + '</div>';
+    });
+    body += '</div>';
+
+    var canvas = document.getElementById('cxCanvas');
+    canvas.innerHTML = '<div class="tlx">' + head + body + '</div>';
+    // blocs -> détail
+    canvas.querySelectorAll('.tlx-block').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.stopPropagation(); openBooking(el.getAttribute('data-id')); });
+    });
+    // clic sur l'en-tête d'un jour -> vue Jour
+    if (days.length > 1) canvas.querySelectorAll('.tlx-dh').forEach(function (h) {
+      h.addEventListener('click', function () { cursor = new Date(h.getAttribute('data-day') + 'T00:00'); vView = 'day'; setActiveView('day'); refresh(); });
+    });
+    // se positionner en soirée (19h) par défaut
+    var bodyEl = canvas.querySelector('.tlx-body');
+    if (bodyEl) bodyEl.scrollTop = (19 - START_H) * HH - 20;
   }
 
   /* ---------- ANNÉE ---------- */
