@@ -633,3 +633,11 @@ button.btn{cursor:pointer;font:inherit}
 @media(max-width:560px){
   .events__grid{grid-template-columns:1fr}
 }
+
+/* ---- Carte CTA réservation (remplace le formulaire WhatsApp) ---- */
+.resa--cta{display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;gap:1.1rem;min-height:340px}
+.resa-cta__icon{width:74px;height:74px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center}
+.resa--cta .resa__title{font-size:2rem}
+.resa--cta .resa__hint{max-width:360px;margin:0 auto}
+.resa--cta .resa__submit{margin-top:.4rem;min-width:220px}
+.resa-cta__hours{font-size:.72rem;letter-spacing:.1em;color:var(--cream-dim);margin-top:.4rem}

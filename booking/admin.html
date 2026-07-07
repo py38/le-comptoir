@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Espace restaurant — Le Comptoir</title>
+<title>Agenda — Le Comptoir</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="../assets/img/logo.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
 <div class="grain"></div>
 
 <header class="bk-top">
-  <span class="bk-brand"><img src="../assets/img/logo.jpeg" alt="Le Comptoir"><span>Le Comptoir · Admin</span></span>
+  <span class="bk-brand"><img src="../assets/img/logo.jpeg" alt="Le Comptoir"><span>Le Comptoir · Agenda</span></span>
   <button class="bk-back" id="logoutBtn" hidden>Déconnexion →</button>
 </header>
 
@@ -35,37 +35,47 @@
 </div>
 
 <!-- DASHBOARD -->
-<main class="bk-wrap" id="dashView" hidden>
-  <div class="adm-tabs">
-    <button class="active" data-tab="agenda">Agenda &amp; créneaux</button>
-    <button data-tab="resa">Réservations</button>
+<main class="bk-wrap" id="dashView" hidden style="max-width:1240px">
+  <div class="cx-bar">
+    <div class="cx-views" id="cxViews">
+      <button data-v="day">Jour</button>
+      <button data-v="week">Semaine</button>
+      <button class="active" data-v="month">Mois</button>
+      <button data-v="year">Année</button>
+    </div>
+    <div class="cx-nav">
+      <button id="cxPrev" aria-label="Précédent">‹</button>
+      <button class="today" id="cxToday">Aujourd'hui</button>
+      <button id="cxNext" aria-label="Suivant">›</button>
+    </div>
+    <h2 class="cx-title" id="cxTitle">—</h2>
+    <div class="cx-stats">
+      <div class="cx-stat"><b id="statResa">0</b><span>Réservations à venir</span></div>
+      <div class="cx-stat"><b id="statCouverts">0</b><span>Couverts aujourd'hui</span></div>
+    </div>
   </div>
 
-  <!-- AGENDA -->
-  <section class="adm-panel active" data-panel="agenda">
-    <form class="adm-addform" id="addForm">
-      <label>Date<input type="date" id="sDate" required></label>
-      <label>Heure<input type="time" id="sTime" value="20:00" required></label>
-      <label>Couverts<input type="number" id="sCap" min="1" value="40" required style="width:90px"></label>
-      <button type="submit" class="btn btn--gold" style="padding:.8rem 1.4rem">Ajouter le créneau</button>
-      <p class="bk-msg" id="addMsg" style="width:100%"></p>
-    </form>
-    <table class="tbl" id="slotsTbl">
-      <thead><tr><th>Date</th><th>Heure</th><th>Couverts</th><th>Réservés</th><th>Restant</th><th>État</th><th>Actions</th></tr></thead>
-      <tbody id="slotsBody"></tbody>
-    </table>
-    <p class="adm-empty" id="slotsEmpty" hidden>Aucun créneau à venir. Ajoutez-en un ci-dessus.</p>
-  </section>
+  <div class="cap-bar">
+    <label>Couverts / jour (défaut)
+      <input type="number" id="defCap" min="0" style="width:80px">
+    </label>
+    <button class="mini" id="saveDefCap">Enregistrer</button>
+    <span class="sp"></span>
+    <span id="dayCapInfo"></span>
+  </div>
 
-  <!-- RÉSERVATIONS -->
-  <section class="adm-panel" data-panel="resa">
-    <table class="tbl" id="resaTbl">
-      <thead><tr><th>Date</th><th>Heure</th><th>Client</th><th>Téléphone</th><th>Pers.</th><th>Note</th><th></th></tr></thead>
-      <tbody id="resaBody"></tbody>
-    </table>
-    <p class="adm-empty" id="resaEmpty" hidden>Aucune réservation pour le moment.</p>
-  </section>
+  <div class="cx-canvas" id="cxCanvas"></div>
 </main>
+
+<!-- Détail réservation -->
+<div class="rz-modal" id="rzModal">
+  <div class="rz-card">
+    <button class="rz-close" id="rzClose" aria-label="Fermer">&times;</button>
+    <h3 id="rzTitle">Réservation</h3>
+    <div id="rzBody"></div>
+    <button class="btn btn--ghost" id="rzCancel" style="margin-top:1.2rem;width:100%">Annuler la réservation</button>
+  </div>
+</div>
 
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

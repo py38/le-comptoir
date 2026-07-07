@@ -38,16 +38,20 @@ La plateforme fonctionne en **2 modes** :
 ## Utilisation
 
 - **Clients** : `booking/reservation.html` (lié au bouton « Réserver » du site).
-- **Restaurant** : `booking/admin.html` (lien discret « Espace restaurant » en bas de page).
-  - *Agenda & créneaux* : ajouter des créneaux (date, heure, nombre de couverts),
-    bloquer/débloquer, supprimer.
-  - *Réservations* : voir et annuler les réservations reçues.
+  Ils choisissent une date, une heure (dans les horaires d'ouverture) et le nombre de
+  personnes. Confirmation immédiate.
+- **Restaurant** : `booking/admin.html` (lien « Espace restaurant » en bas de page).
+  - **Agenda type Apple** : vues **Jour / Semaine / Mois / Année**.
+  - **Compteur temps réel** : réservations à venir + couverts du jour.
+  - **Couverts / jour** : capacité par défaut (modifiable), et surcharge jour par jour
+    (ouvrir en vue *Jour* → ajuster ou fermer le jour).
+  - Cliquer une réservation → détail + annulation.
 
 ## Notes techniques
 
 - La clé *anon public* est faite pour être exposée côté navigateur ; la sécurité est
   assurée par les règles **RLS** définies dans `schema.sql`.
-- Les réservations sont **atomiques** (fonction `create_booking`) : pas de surbooking
-  même en cas de réservations simultanées.
-- La capacité est comptée **en nombre de couverts** par créneau.
+- Réservations **atomiques** (fonction `create_booking` + verrou) : pas de surbooking.
+- Capacité **en couverts par jour** ; horaires d'ouverture définis dans `config.js`.
 - Confirmation **automatique** tant qu'il reste de la place.
+- Mise à jour **temps réel** de l'admin via Supabase Realtime.

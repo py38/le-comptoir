@@ -381,46 +381,19 @@
       </div>
 
       <div class="visite__actions" data-reveal data-delay="4">
-        <a href="tel:+2250798974607" class="btn btn--gold">Appeler pour réserver</a>
+        <a href="booking/reservation.html" class="btn btn--gold">Réserver une table</a>
         <a href="https://www.google.com/maps/search/?api=1&query=Le+Comptoir+Bar+Restaurant+Ivoire+Trade+Center+Abidjan" target="_blank" rel="noopener" class="btn btn--ghost">Itinéraire</a>
       </div>
     </div>
 
-    <div class="resa" data-reveal data-delay="2">
-      <h3 class="resa__title">Réserver une table</h3>
-      <p class="resa__hint">Renseignez vos informations&nbsp;: votre demande s'ouvrira pré-remplie sur WhatsApp, prête à envoyer.</p>
-      <form id="resaForm" class="resa__form" novalidate>
-        <div class="resa__row">
-          <label>Nom complet
-            <input type="text" name="nom" required placeholder="Votre nom">
-          </label>
-          <label>Téléphone
-            <input type="tel" name="tel" required placeholder="07 ...">
-          </label>
-        </div>
-        <div class="resa__row">
-          <label>Date
-            <input type="date" name="date" required>
-          </label>
-          <label>Heure
-            <input type="time" name="heure" required>
-          </label>
-          <label>Couverts
-            <select name="couverts" required>
-              <option value="1">1</option><option value="2" selected>2</option>
-              <option value="3">3</option><option value="4">4</option>
-              <option value="5">5</option><option value="6">6</option>
-              <option value="7">7</option><option value="8">8</option>
-              <option value="9+">9 +</option>
-            </select>
-          </label>
-        </div>
-        <label>Un mot pour nous <small>(optionnel)</small>
-          <textarea name="message" rows="2" placeholder="Occasion, allergies, salle privée…"></textarea>
-        </label>
-        <button type="submit" class="btn btn--gold resa__submit">Envoyer ma demande</button>
-        <p class="resa__error" id="resaError"></p>
-      </form>
+    <div class="resa resa--cta" data-reveal data-delay="2">
+      <div class="resa-cta__icon">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/><circle cx="12" cy="14.5" r="2.4"/></svg>
+      </div>
+      <h3 class="resa__title">Réservation en ligne</h3>
+      <p class="resa__hint">Choisissez votre date et votre heure, voyez les disponibilités en temps réel et réservez en quelques secondes. Confirmation immédiate.</p>
+      <a href="booking/reservation.html" class="btn btn--gold resa__submit" style="text-align:center">Choisir ma date</a>
+      <p class="resa-cta__hours">Ouvert Lun–Ven 07h30–00h · Sam 11h30–00h · Dim 11h00–00h</p>
     </div>
   </div>
 </section>

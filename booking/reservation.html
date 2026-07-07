@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Réserver une table — Le Comptoir</title>
-<meta name="description" content="Réservez votre table au Comptoir, Abidjan. Choisissez votre date et votre créneau en temps réel.">
+<meta name="description" content="Réservez votre table au Comptoir, Abidjan. Choisissez votre date et votre heure en temps réel.">
 <link rel="icon" href="../assets/img/logo.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,7 @@
   <div class="bk-head">
     <span class="kicker">Réservation</span>
     <h1>Réservez votre table</h1>
-    <p>Choisissez une date, puis un créneau disponible. Confirmation immédiate.</p>
+    <p>Choisissez une date et une heure. Confirmation immédiate.</p>
   </div>
 
   <div class="bk-grid">
@@ -42,32 +42,36 @@
       </div>
       <div class="cal-dow"><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span></div>
       <div class="cal-days" id="calDays"></div>
+      <p class="cal-legend"><span class="dot"></span> Dates disponibles</p>
     </section>
 
-    <!-- Créneaux + formulaire -->
+    <!-- Heure + formulaire -->
     <section class="bk-card" id="rightPanel">
-      <div id="slotsView">
+      <div id="formView">
         <div class="slot-date" id="slotDate">Sélectionnez une date</div>
-        <div class="slots" id="slotsList"></div>
-        <p class="bk-empty" id="slotsEmpty" hidden>Aucun créneau disponible ce jour-là.</p>
+        <p class="bk-remaining" id="remaining" hidden></p>
+        <p class="bk-empty" id="closedMsg" hidden>Le restaurant est fermé ce jour-là.</p>
 
         <form class="bk-form" id="bkForm" hidden>
+          <div class="row">
+            <label>Heure
+              <select id="fTime"></select>
+            </label>
+            <label>Personnes
+              <select id="fParty">
+                <option>1</option><option selected>2</option><option>3</option><option>4</option>
+                <option>5</option><option>6</option><option>7</option><option>8</option>
+                <option>9</option><option>10</option>
+              </select>
+            </label>
+          </div>
           <div class="row">
             <label>Nom complet<input type="text" id="fName" placeholder="Votre nom" required></label>
             <label>Téléphone<input type="tel" id="fPhone" placeholder="07 ..." required></label>
           </div>
-          <div class="row">
-            <label>Nombre de personnes
-              <select id="fParty">
-                <option>1</option><option selected>2</option><option>3</option><option>4</option>
-                <option>5</option><option>6</option><option>7</option><option>8</option>
-                <option>9</option><option>10</option><option value="11">11 +</option>
-              </select>
-            </label>
-            <label>Occasion <small style="text-transform:none;letter-spacing:0;color:var(--cream-dim)">(optionnel)</small>
-              <input type="text" id="fNote" placeholder="Anniversaire, allergies…">
-            </label>
-          </div>
+          <label>Occasion <small style="text-transform:none;letter-spacing:0;color:var(--cream-dim)">(optionnel)</small>
+            <input type="text" id="fNote" placeholder="Anniversaire, allergies…">
+          </label>
           <button type="submit" class="btn btn--gold" id="bkSubmit">Confirmer la réservation</button>
           <p class="bk-msg" id="bkMsg"></p>
         </form>
