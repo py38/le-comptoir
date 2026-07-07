@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Comptoir — Bar &amp; Restaurant · Abidjan</title>
+<meta name="description" content="Le Comptoir, restaurant et bar haut de gamme au cœur de l'Ivoire Trade Center, Abidjan. Une cuisine raffinée, une cave d'exception et une atmosphère d'un autre monde.">
+<link rel="icon" href="assets/img/logo.jpeg">
+<!-- PWA -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0c1a22">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Le Comptoir">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===== Preloader ===== -->
+<div class="preloader" id="preloader">
+  <div class="preloader__inner">
+    <img src="assets/img/logo.jpeg" alt="Le Comptoir" class="preloader__logo">
+    <span class="preloader__name">LE COMPTOIR</span>
+    <div class="preloader__bar"><span></span></div>
+  </div>
+</div>
+
+<!-- ===== Progress + grain ===== -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="grain"></div>
+
+<!-- ===== Nav ===== -->
+<header class="nav" id="nav">
+  <a href="#hero" class="nav__brand">
+    <img src="assets/img/logo.jpeg" alt="Le Comptoir">
+    <span>Le Comptoir</span>
+  </a>
+  <nav class="nav__links">
+    <a href="#about">La Maison</a>
+    <a href="#menu">La Carte</a>
+    <a href="#events">Événements</a>
+    <a href="#cave">La Cave</a>
+    <a href="#app">L'App</a>
+    <a href="#visite">Nous Trouver</a>
+  </nav>
+  <a href="#menu" class="nav__cta nav__cta--ghost">Commander</a>
+  <a href="#reserver" class="nav__cta">Réserver</a>
+  <button class="nav__burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about">La Maison</a>
+  <a href="#menu">La Carte</a>
+  <a href="#menu">Commander</a>
+  <a href="#events">Événements</a>
+  <a href="#cave">La Cave</a>
+  <a href="#app">L'App</a>
+  <a href="#visite">Nous Trouver</a>
+  <a href="https://www.instagram.com/lecomptoir.abidjan/" target="_blank" rel="noopener">Instagram</a>
+  <a href="#reserver" class="mobile-menu__cta">Réserver</a>
+</div>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero__media">
+    <picture>
+      <source media="(max-width:768px)" srcset="assets/img/bar.jpg">
+      <img src="assets/img/salle.jpg" alt="La salle du Comptoir" class="hero__img" id="heroImg">
+    </picture>
+    <div class="hero__overlay"></div>
+  </div>
+  <div class="hero__content">
+    <span class="hero__eyebrow" data-reveal>Ivoire Trade Center · Abidjan</span>
+    <h1 class="hero__title">
+      <span data-reveal data-delay="1">Le Comptoir</span>
+    </h1>
+    <p class="hero__sub" data-reveal data-delay="2">Bar &amp; Restaurant · L'art de recevoir, à la hauteur de l'instant.</p>
+    <div class="hero__actions" data-reveal data-delay="3">
+      <a href="#reserver" class="btn btn--gold">Réserver une table</a>
+      <a href="#menu" class="btn btn--ghost">Découvrir la carte</a>
+    </div>
+  </div>
+  <div class="hero__scroll" data-reveal data-delay="4">
+    <span>Défiler</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<!-- ===== Marquee ===== -->
+<div class="marquee">
+  <div class="marquee__track">
+    <span>Cuisine raffinée</span><i>✦</i><span>Cave d'exception</span><i>✦</i><span>Mixologie</span><i>✦</i><span>Salle privée</span><i>✦</i><span>Happy Hour</span><i>✦</i>
+    <span>Cuisine raffinée</span><i>✦</i><span>Cave d'exception</span><i>✦</i><span>Mixologie</span><i>✦</i><span>Salle privée</span><i>✦</i><span>Happy Hour</span><i>✦</i>
+  </div>
+</div>
+
+<!-- ===== ABOUT ===== -->
+<section class="about" id="about">
+  <div class="about__text">
+    <span class="kicker" data-reveal>La Maison</span>
+    <h2 class="h-display" data-reveal data-delay="1">Une parenthèse<br><em>hors du temps</em></h2>
+    <p data-reveal data-delay="2">Niché au cœur de l'Ivoire Trade Center, Le Comptoir est une adresse où la gastronomie se vit comme un voyage. Plafonds vertigineux, fresques végétales, lumières tamisées et marbre veiné&nbsp;: chaque détail compose un décor pensé pour sublimer la table.</p>
+    <p data-reveal data-delay="3">Ici, une cuisine de produit, une cave précieuse et une mixologie inspirée se rencontrent pour offrir à Abidjan l'une de ses expériences les plus raffinées.</p>
+    <div class="about__stats" data-reveal data-delay="4">
+      <div><strong>4,4<span>/5</span></strong><small>960 avis Google</small></div>
+      <div><strong>7j<span>/7</span></strong><small>jusqu'à minuit</small></div>
+    </div>
+  </div>
+  <div class="about__media">
+    <div class="about__img-wrap" data-reveal data-delay="2">
+      <img src="assets/img/salle2.jpg" alt="Intérieur du Comptoir" data-parallax="0.12">
+    </div>
+    <div class="about__badge" data-reveal data-delay="3">
+      <img src="assets/img/logo.jpeg" alt="Logo Le Comptoir">
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE / VIDEO PINNED ===== -->
+<section class="experience" id="experience">
+  <div class="experience__bg" aria-hidden="true"></div>
+  <div class="experience__veil"></div>
+  <div class="experience__inner">
+    <div class="experience__content">
+      <span class="kicker kicker--light" data-reveal>L'Expérience</span>
+      <h2 class="h-display h-display--light" data-reveal data-delay="1">À toute heure,<br>il y a toujours une bonne<br>raison de venir.</h2>
+      <p data-reveal data-delay="2">Du premier café du matin au dernier cocktail avant minuit, Le Comptoir épouse le rythme de vos envies.</p>
+    </div>
+    <div class="experience__frame" data-reveal data-delay="2">
+      <video muted loop playsinline preload="metadata" poster="assets/img/bar.jpg" data-autoplay>
+        <source src="assets/video/ambiance.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRIPTYQUE VIDEOS ===== -->
+<section class="triptych">
+  <div class="triptych__head">
+    <span class="kicker" data-reveal>Instants</span>
+    <h2 class="h-display" data-reveal data-delay="1">La magie du Comptoir</h2>
+  </div>
+  <div class="triptych__grid">
+    <figure class="vcard" data-reveal>
+      <video muted loop playsinline preload="metadata" poster="assets/img/banquette.jpg" data-autoplay>
+        <source src="assets/video/cuisine.mp4" type="video/mp4">
+      </video>
+      <figcaption><span>01</span>Tout commence en cuisine</figcaption>
+    </figure>
+    <figure class="vcard vcard--tall" data-reveal data-delay="1">
+      <video muted loop playsinline preload="metadata" poster="assets/img/duo-marbre.jpg" data-autoplay>
+        <source src="assets/video/cocktail.mp4" type="video/mp4">
+      </video>
+      <figcaption><span>02</span>Le ballet des cocktails</figcaption>
+    </figure>
+    <figure class="vcard" data-reveal data-delay="2">
+      <video muted loop playsinline preload="metadata" poster="assets/img/salle.jpg" data-autoplay>
+        <source src="assets/video/ambiance.mp4" type="video/mp4">
+      </video>
+      <figcaption><span>03</span>Une atmosphère à part</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== MENU ===== -->
+<section class="menu" id="menu">
+  <div class="menu__intro">
+    <span class="kicker" data-reveal>La Carte</span>
+    <h2 class="h-display" data-reveal data-delay="1">Le menu</h2>
+    <p data-reveal data-delay="2">Une cuisine de saison qui voyage de la terre à la mer, signée par notre brigade et la vitrine sucrée de notre Cheffe Lina. Prix en francs CFA.</p>
+  </div>
+
+  <div class="order-banner" data-reveal>
+    <div class="order-banner__head">
+      <span class="order-banner__tag">Commander en ligne</span>
+      <h3>Composez votre commande, payez par Wave ou Orange Money</h3>
+    </div>
+    <div class="order-banner__steps">
+      <div><span>1</span>Touchez <strong>« Ajouter »</strong> sous chaque plat souhaité.</div>
+      <div><span>2</span>Ouvrez le <strong>panier doré</strong> en bas, puis envoyez sur <strong>WhatsApp</strong>.</div>
+      <div><span>3</span>L'équipe confirme et vous règlez par <strong>Wave / Orange Money</strong> (preuve par capture).</div>
+    </div>
+  </div>
+
+  <div class="menu__tabs" id="menuTabs" data-reveal>
+    <button class="active" data-tab="mer">Produits de la mer</button>
+    <button data-tab="terre">Produits de la terre</button>
+    <button data-tab="partager">À partager</button>
+    <button data-tab="plats">Nos plats</button>
+    <button data-tab="tartares">Tartares &amp; Carpaccios</button>
+    <button data-tab="desserts">Desserts</button>
+    <button data-tab="vitrine">La vitrine sucrée</button>
+    <button data-tab="pozzetto">Glaces &amp; Sorbets</button>
+  </div>
+
+  <div class="menu__panels">
+
+    <!-- MER -->
+    <div class="menu__panel active" data-panel="mer">
+      <div class="dish"><div class="dish__head"><h3>Carpaccio de mérou aux agrumes</h3><span class="dish__price">15&nbsp;000</span></div><p>Fines lamelles de mérou, suprêmes d'agrumes et huile parfumée.</p></div>
+      <div class="dish"><div class="dish__head"><h3>« Dévoué » de bar</h3><span class="dish__price">24&nbsp;000</span></div><p>Tartare de bar, agrumes et condiments délicats.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Tartare de saumon, hibiscus</h3><span class="dish__price">32&nbsp;000</span></div><p>Saumon au couteau, infusion d'hibiscus.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Saumon fumé d'Écosse à la ficelle</h3><span class="dish__price">15&nbsp;000</span></div><p>Fumé maison, blinis et crème.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Tataki de thon, miso, teriyaki</h3><span class="dish__price">24&nbsp;000</span></div><p>Thon juste saisi, laque teriyaki et miso.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Gambas croustillantes</h3><span class="dish__price">16&nbsp;000</span></div><p>Crème cheese aux herbes et chou croquant.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Ceviche de poulpe</h3><span class="dish__price">22&nbsp;000</span></div><p>Citron &amp; huile d'olive, condiment carotte-gingembre.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Ravioles de gambas ouvertes, ricotta</h3><span class="dish__price">14&nbsp;000</span></div><p>Gambas, ricotta et bouillon parfumé.</p></div>
+    </div>
+
+    <!-- TERRE -->
+    <div class="menu__panel" data-panel="terre">
+      <div class="dish"><div class="dish__head"><h3>Aubergine rôtie au chèvre</h3><span class="dish__price">14&nbsp;000</span></div><p>Edamame, crème aux herbes, menthe &amp; épinards.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Bœuf sauté au miso</h3><span class="dish__price">19&nbsp;000</span></div><p>Émincé de bœuf laqué, sauce miso.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Tartare à la tomate, burrata &amp; pesto</h3><span class="dish__price">20&nbsp;000</span></div><p>Tomate, burrata crémeuse et pesto maison.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Gros marronnais du Comptoir</h3><span class="dish__price">10&nbsp;000</span></div><p>Moutarde à l'ancienne et croûtons de pain.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Brave de champignons</h3><span class="dish__price">18&nbsp;000</span></div><p>Beurre blanc à l'estragon, escargots en persillade.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Saint-Marcellin rôti</h3><span class="dish__price">14&nbsp;000</span></div><p>Pain aux céréales et salade.</p></div>
+    </div>
+
+    <!-- À PARTAGER -->
+    <div class="menu__panel" data-panel="partager">
+      <p class="menu__note">Pensé pour deux convives.</p>
+      <div class="dish"><div class="dish__head"><h3>Pizzetti burrata, jambon de Parme</h3><span class="dish__price">24&nbsp;000</span></div><p>Burrata, jambon de Parme et tomate séchée.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Pizzetti burrata, tartufata</h3><span class="dish__price">22&nbsp;000</span></div><p>Burrata, tartufata et épinards.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Planche de jambon ibérique</h3><span class="dish__price">30&nbsp;000</span></div><p>Pata negra finement tranché.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Notre Veggie</h3><span class="dish__price">14&nbsp;000</span></div><p>Tartine végétale du Comptoir, légumes &amp; céréales.</p></div>
+    </div>
+
+    <!-- PLATS -->
+    <div class="menu__panel" data-panel="plats">
+      <div class="dish"><div class="dish__head"><h3>Entrecôte de bœuf Simmental · 380g</h3><span class="dish__price">36&nbsp;000</span></div><p>Sauce béarnaise et frites maison.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Filet de bœuf Angus</h3><span class="dish__price">36&nbsp;000</span></div><p>Poivre de raffia et frites.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Filet mignon de veau</h3><span class="dish__price">32&nbsp;000</span></div><p>Coquillettes à la tartufata, sauce porto truffée.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Entrecôte de veau, sauce soubise</h3><span class="dish__price">30&nbsp;000</span></div><p>Pommes paillasson.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Suprême de cochon basse température</h3><span class="dish__price">30&nbsp;000</span></div><p>Gnocchis, sauce moutarde et gratin de riz.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Suprême de canard, sauce bigarade</h3><span class="dish__price">29&nbsp;000</span></div><p>Carotte et agrumes.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Onglet de bœuf Black Angus</h3><span class="dish__price">23&nbsp;000</span></div><p>Compotée d'oignon au miel, pommes paillasson.</p></div>
+    </div>
+
+    <!-- TARTARES -->
+    <div class="menu__panel" data-panel="tartares">
+      <div class="dish"><div class="dish__head"><h3>Tartare de bœuf au couteau</h3><span class="dish__price">24&nbsp;000</span></div><p>Frites et salade.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Carpaccio de bœuf à l'italienne</h3><span class="dish__price">19&nbsp;000</span></div><p>Câpres, parmesan, frites et salade.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Chiffonnade de filet mignon de veau bio</h3><span class="dish__price">24&nbsp;000</span></div><p>Condiment césar, frites et salade.</p></div>
+    </div>
+
+    <!-- DESSERTS -->
+    <div class="menu__panel" data-panel="desserts">
+      <p class="menu__note">Les incontournables.</p>
+      <div class="dish"><div class="dish__head"><h3>Pain perdu maison</h3><span class="dish__price">8&nbsp;000</span></div><p>Avec sa boule de glace vanille.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Mi-cuit au chocolat</h3><span class="dish__price">9&nbsp;000</span></div><p>Avec sa boule de glace vanille.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Crème brûlée</h3><span class="dish__price">8&nbsp;000</span></div><p>À la vanille de Madagascar.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Tiramisu Nuage</h3><span class="dish__price">9&nbsp;500</span></div><p>Touche d'amaretto.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Tiramisu Matcha</h3><span class="dish__price">10&nbsp;000</span></div><p>Crème légère, biscuit imbibé au matcha.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Riz au lait intensément vanillé</h3><span class="dish__price">9&nbsp;000</span></div><p>Beurre salé, noisettes &amp; sarrasin.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Crumble aux pommes</h3><span class="dish__price">10&nbsp;000</span></div><p>Pommes caramélisées, crème légère à la fève de Tonka.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Profiteroles Le Comptoir</h3><span class="dish__price">9&nbsp;500</span></div><p>Glaces vanille &amp; chocolat, sauce chocolat chaud.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Café très gourmand</h3><span class="dish__price">9&nbsp;500</span></div><p>Un café et son assortiment de mignardises.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Mousse tout-choco</h3><span class="dish__price">8&nbsp;000</span></div><p>Avec une pointe de fleur de sel.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Salade de fruits frais</h3><span class="dish__price">7&nbsp;000</span></div><p>Sirop infusé à la vanille de Madagascar.</p></div>
+    </div>
+
+    <!-- VITRINE -->
+    <div class="menu__panel" data-panel="vitrine">
+      <p class="menu__note">La vitrine de notre Cheffe Lina et son équipe.</p>
+      <div class="dish"><div class="dish__head"><h3>Paris-Brest</h3><span class="dish__price">8&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Pavlova chocolat &amp; praliné</h3><span class="dish__price">8&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Tarte au citron</h3><span class="dish__price">8&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Macaron vanille de Madagascar &amp; framboises</h3><span class="dish__price">9&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Fraisier</h3><span class="dish__price">9&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Framboisier</h3><span class="dish__price">9&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Tarte vanille de Madagascar &amp; fraise</h3><span class="dish__price">9&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Tarte pistache framboise</h3><span class="dish__price">9&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Tarte café vanille de Madagascar</h3><span class="dish__price">9&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Tarte pistache fleur d'oranger</h3><span class="dish__price">9&nbsp;000</span></div></div>
+    </div>
+
+    <!-- POZZETTO -->
+    <div class="menu__panel" data-panel="pozzetto">
+      <p class="menu__note">Pozzetto · glaces &amp; sorbets artisanaux — 1 boule 2&nbsp;500 · 2 boules 4&nbsp;500 · 3 boules 7&nbsp;000</p>
+      <div class="pozzetto">
+        <div class="pozzetto__col">
+          <h4>Les glaces</h4>
+          <ul>
+            <li>Vanille bourbon</li><li>Chocolat noir</li><li>Gianduja di pozzetto</li><li>Chocolat blanc</li><li>Cannelle</li><li>Caramel beurre salé</li><li>Café Costadora</li><li>Noisette</li><li>Pistache di pozzetto</li><li>Matcha (thé vert japonais)</li><li>Violette</li>
+          </ul>
+        </div>
+        <div class="pozzetto__col">
+          <h4>Les sorbets</h4>
+          <ul>
+            <li>Citron</li><li>Banane</li><li>Mangue</li><li>Fraise</li><li>Framboise</li><li>Noix de coco</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== CAVE (parallax image) ===== -->
+<section class="cave" id="cave">
+  <div class="cave__media">
+    <img src="assets/img/bar.jpg" alt="Le bar du Comptoir" data-parallax="0.18">
+    <div class="cave__veil"></div>
+  </div>
+  <div class="cave__content">
+    <span class="kicker kicker--light" data-reveal>La Cave &amp; le Bar</span>
+    <h2 class="h-display h-display--light" data-reveal data-delay="1">Champagnes,<br>grands crus &amp; cocktails</h2>
+    <p data-reveal data-delay="2">Une cave précieuse&nbsp;: Laurent-Perrier, Ruinart, Veuve Clicquot, Moët, Billecart-Salmon, Pommery, et les grands crus de Bordeaux — Pauillac, Saint-Émilion, Pomerol, Margaux. Au comptoir, nos barmen signent une mixologie d'auteur.</p>
+    <div class="cave__chips" data-reveal data-delay="3">
+      <span>Champagnes millésimés</span>
+      <span>Grands crus de Bordeaux</span>
+      <span>Cocktails signatures</span>
+      <span>Happy Hour</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ÉVÉNEMENTS ===== -->
+<section class="events" id="events">
+  <div class="events__head">
+    <span class="kicker" data-reveal>Événements</span>
+    <h2 class="h-display" data-reveal data-delay="1">Nos plus belles soirées</h2>
+    <p data-reveal data-delay="2">Dîners privés, anniversaires, afterworks et soirées signatures — un aperçu des moments vécus au Comptoir.</p>
+  </div>
+  <div class="events__grid" id="eventsGrid">
+    <figure class="ecard ecard--lg" data-reveal>
+      <img src="assets/img/bar.jpg" alt="Soirée au bar du Comptoir" loading="lazy">
+      <figcaption><span class="ecard__date">Soirée signature</span><span class="ecard__title">Les nuits du Comptoir</span></figcaption>
+    </figure>
+    <figure class="ecard" data-reveal data-delay="1">
+      <img src="assets/img/duo-marbre.jpg" alt="Dîner entre amis" loading="lazy">
+      <figcaption><span class="ecard__date">Dîner privé</span><span class="ecard__title">Tables d'exception</span></figcaption>
+    </figure>
+    <figure class="ecard" data-reveal data-delay="2">
+      <img src="assets/img/banquette.jpg" alt="Célébration" loading="lazy">
+      <figcaption><span class="ecard__date">Célébration</span><span class="ecard__title">Anniversaires &amp; surprises</span></figcaption>
+    </figure>
+    <figure class="ecard" data-reveal data-delay="1">
+      <img src="assets/img/salle2.jpg" alt="Privatisation de la salle" loading="lazy">
+      <figcaption><span class="ecard__date">Privatisation</span><span class="ecard__title">La salle rien que pour vous</span></figcaption>
+    </figure>
+    <figure class="ecard ecard--lg" data-reveal data-delay="2">
+      <img src="assets/img/salle.jpg" alt="Réception au Comptoir" loading="lazy">
+      <figcaption><span class="ecard__date">Réception</span><span class="ecard__title">Grandes occasions</span></figcaption>
+    </figure>
+  </div>
+  <p class="events__note" data-reveal>Un événement à organiser&nbsp;? <a href="#reserver">Contactez-nous</a> pour une privatisation ou la salle à manger privée.</p>
+</section>
+
+<!-- ===== RESERVER / VISITE ===== -->
+<section class="visite" id="visite">
+  <div class="visite__grid">
+    <div class="visite__info" id="reserver">
+      <span class="kicker" data-reveal>Nous trouver &amp; réserver</span>
+      <h2 class="h-display" data-reveal data-delay="1">Votre table<br>vous attend</h2>
+      <p class="visite__lead" data-reveal data-delay="2">La réservation est conseillée. Notre équipe vous accueille du matin jusqu'à minuit, et compose volontiers vos privatisations et événements en salle privée.</p>
+
+      <div class="info-grid">
+        <div class="info-block" data-reveal data-delay="2">
+          <h4>Adresse</h4>
+          <p>Ivoire Trade Center (ITC)<br>Abidjan, Côte d'Ivoire</p>
+        </div>
+        <div class="info-block" data-reveal data-delay="3">
+          <h4>Téléphone</h4>
+          <p><a href="tel:+2250798974607">07 98 97 46 07</a></p>
+        </div>
+        <div class="info-block" data-reveal data-delay="3">
+          <h4>Horaires</h4>
+          <p>Lun – Ven · 07h30 – 00h00<br>Samedi · 11h30 – 00h00<br>Dimanche · 11h00 – 00h00</p>
+        </div>
+        <div class="info-block" data-reveal data-delay="4">
+          <h4>Services</h4>
+          <p>Réservation conseillée · Salle privée · Happy Hour</p>
+        </div>
+      </div>
+
+      <div class="visite__actions" data-reveal data-delay="4">
+        <a href="tel:+2250798974607" class="btn btn--gold">Appeler pour réserver</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Le+Comptoir+Bar+Restaurant+Ivoire+Trade+Center+Abidjan" target="_blank" rel="noopener" class="btn btn--ghost">Itinéraire</a>
+      </div>
+    </div>
+
+    <div class="resa" data-reveal data-delay="2">
+      <h3 class="resa__title">Réserver une table</h3>
+      <p class="resa__hint">Renseignez vos informations&nbsp;: votre demande s'ouvrira pré-remplie sur WhatsApp, prête à envoyer.</p>
+      <form id="resaForm" class="resa__form" novalidate>
+        <div class="resa__row">
+          <label>Nom complet
+            <input type="text" name="nom" required placeholder="Votre nom">
+          </label>
+          <label>Téléphone
+            <input type="tel" name="tel" required placeholder="07 ...">
+          </label>
+        </div>
+        <div class="resa__row">
+          <label>Date
+            <input type="date" name="date" required>
+          </label>
+          <label>Heure
+            <input type="time" name="heure" required>
+          </label>
+          <label>Couverts
+            <select name="couverts" required>
+              <option value="1">1</option><option value="2" selected>2</option>
+              <option value="3">3</option><option value="4">4</option>
+              <option value="5">5</option><option value="6">6</option>
+              <option value="7">7</option><option value="8">8</option>
+              <option value="9+">9 +</option>
+            </select>
+          </label>
+        </div>
+        <label>Un mot pour nous <small>(optionnel)</small>
+          <textarea name="message" rows="2" placeholder="Occasion, allergies, salle privée…"></textarea>
+        </label>
+        <button type="submit" class="btn btn--gold resa__submit">Envoyer ma demande</button>
+        <p class="resa__error" id="resaError"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== APP / TÉLÉCHARGER ===== -->
+<section class="appsec" id="app">
+  <div class="appsec__inner">
+    <div class="appsec__text">
+      <span class="kicker" data-reveal>L'Application</span>
+      <h2 class="h-display" data-reveal data-delay="1">Le Comptoir,<br>dans votre poche</h2>
+      <p data-reveal data-delay="2">Installez l'application pour réserver, composer vos commandes et garder la carte toujours à portée de main — même hors connexion.</p>
+      <ul class="appsec__benefits" data-reveal data-delay="2">
+        <li>Réservation en un geste via WhatsApp</li>
+        <li>Commande à emporter ou en livraison</li>
+        <li>La carte consultable hors-ligne</li>
+        <li>Accès direct depuis l'écran d'accueil</li>
+      </ul>
+      <div class="appsec__actions" data-reveal data-delay="3">
+        <button class="btn btn--gold" id="installBtn">Installer l'application</button>
+        <button class="btn btn--ghost" id="iosHelpBtn">Sur iPhone&nbsp;?</button>
+      </div>
+      <p class="appsec__hint" id="installedHint" hidden>✓ Application déjà installée — retrouvez-la sur votre écran d'accueil.</p>
+    </div>
+    <div class="appsec__phone" data-reveal data-delay="2" aria-hidden="true">
+      <div class="phone">
+        <div class="phone__notch"></div>
+        <div class="phone__screen">
+          <img src="assets/img/bar.jpg" alt="">
+          <div class="phone__overlay">
+            <img src="assets/icons/icon-192.png" class="phone__logo" alt="">
+            <span class="phone__name">LE COMPTOIR</span>
+            <span class="phone__tag">Bar &amp; Restaurant · Abidjan</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <img src="assets/img/logo.jpeg" alt="Le Comptoir">
+      <span>Le Comptoir</span>
+      <small>Bar &amp; Restaurant · Abidjan</small>
+    </div>
+    <nav class="footer__nav">
+      <a href="#about">La Maison</a>
+      <a href="#experience">L'Expérience</a>
+      <a href="#menu">La Carte</a>
+      <a href="#cave">La Cave</a>
+      <a href="#visite">Nous trouver</a>
+    </nav>
+    <div class="footer__contact">
+      <p>Ivoire Trade Center, Abidjan</p>
+      <p><a href="tel:+2250798974607">07 98 97 46 07</a></p>
+      <a class="footer__ig" href="https://www.instagram.com/lecomptoir.abidjan/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        <span>@lecomptoir.abidjan</span>
+      </a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© <span id="year"></span> Le Comptoir — Tous droits réservés.</span>
+    <span>Ivoire Trade Center · Côte d'Ivoire</span>
+  </div>
+</footer>
+
+<!-- ===== Floating cart button ===== -->
+<button class="cart-fab" id="cartFab" aria-label="Voir ma commande" hidden>
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="20" r="1.3"/><circle cx="18" cy="20" r="1.3"/><path d="M2.5 3h2l2.2 11.2a1.5 1.5 0 0 0 1.5 1.2h8.2a1.5 1.5 0 0 0 1.5-1.2L21 7H6"/></svg>
+  <span class="cart-fab__count" id="cartCount">0</span>
+</button>
+
+<!-- ===== Cart drawer ===== -->
+<div class="drawer-backdrop" id="drawerBackdrop"></div>
+<aside class="drawer" id="cartDrawer" aria-label="Ma commande">
+  <div class="drawer__head">
+    <h3>Ma commande</h3>
+    <button class="drawer__close" id="drawerClose" aria-label="Fermer">&times;</button>
+  </div>
+
+  <div class="drawer__body" id="cartItems"></div>
+  <p class="drawer__empty" id="cartEmpty">Votre panier est vide.<br><small>Ajoutez des plats depuis la carte.</small></p>
+
+  <div class="drawer__foot" id="cartFoot" hidden>
+    <div class="drawer__total"><span>Total</span><strong id="cartTotal">0 F</strong></div>
+
+    <div class="drawer__form">
+      <div class="drawer__row">
+        <label>Nom<input type="text" id="cName" placeholder="Votre nom"></label>
+        <label>Téléphone<input type="tel" id="cPhone" placeholder="07 ..."></label>
+      </div>
+      <label>Mode
+        <select id="cMode">
+          <option value="À emporter">À emporter</option>
+          <option value="Livraison">Livraison</option>
+          <option value="Sur place">Sur place</option>
+        </select>
+      </label>
+      <label id="cAddrWrap" hidden>Adresse de livraison<input type="text" id="cAddr" placeholder="Quartier, repère…"></label>
+      <label>Note <small>(optionnel)</small><input type="text" id="cNote" placeholder="Cuisson, allergies…"></label>
+    </div>
+
+    <p class="drawer__pay"><strong>Paiement par Wave ou Orange Money.</strong> Après l'envoi, l'équipe vous confirme la commande et vous communique le numéro de paiement&nbsp;; vous réglez puis renvoyez la capture de confirmation. (Sur place et espèces aussi possibles.)</p>
+    <button class="btn btn--gold drawer__submit" id="cartSend">Envoyer la commande sur WhatsApp</button>
+  </div>
+</aside>
+
+<!-- ===== iOS install help modal ===== -->
+<div class="ios-modal" id="iosModal">
+  <div class="ios-modal__card">
+    <button class="ios-modal__close" id="iosClose" aria-label="Fermer">&times;</button>
+    <img src="assets/icons/icon-192.png" alt="" class="ios-modal__logo">
+    <h3>Installer sur iPhone</h3>
+    <ol>
+      <li>Touchez le bouton <strong>Partager</strong> <span class="ios-share">⬆️</span> en bas de Safari.</li>
+      <li>Choisissez <strong>« Sur l'écran d'accueil »</strong>.</li>
+      <li>Validez avec <strong>« Ajouter »</strong>.</li>
+    </ol>
+    <p>L'icône du Comptoir apparaîtra sur votre écran d'accueil.</p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
