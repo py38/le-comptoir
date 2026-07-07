@@ -11,7 +11,7 @@
 .bk-brand{display:flex;align-items:center;gap:.7rem}
 .bk-brand img{width:38px;border-radius:6px}
 .bk-brand span{font-family:var(--serif);font-size:1.3rem;letter-spacing:.14em}
-.bk-back{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim);transition:.3s}
+.bk-back{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--cream-dim);transition:.3s;background:transparent;border:0;cursor:pointer;font-family:var(--sans)}
 .bk-back:hover{color:var(--gold)}
 
 .bk-demo{
@@ -206,4 +206,77 @@
   .tl-hours{flex-basis:42px}
   .mcell{min-height:78px}
   .yv-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ============================================================
+   AGENDA — style iPhone (mois à pastilles + liste, swipe, mobile)
+   ============================================================ */
+.cx-canvas{position:relative;touch-action:pan-y}
+.cx-canvas.anim-l{animation:slideL .28s var(--ease)}
+.cx-canvas.anim-r{animation:slideR .28s var(--ease)}
+@keyframes slideL{from{transform:translateX(24px);opacity:.4}to{transform:none;opacity:1}}
+@keyframes slideR{from{transform:translateX(-24px);opacity:.4}to{transform:none;opacity:1}}
+.cx-hint{font-size:.66rem;letter-spacing:.06em;color:var(--cream-dim);text-align:center;padding:.5rem;border-top:1px solid var(--line)}
+
+/* Mois — cellules à pastilles */
+.mcell{min-height:66px;text-align:center;padding:.45rem .2rem}
+.mcell .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;font-size:.9rem}
+.mcell.today .num{background:var(--gold);color:var(--navy);border-radius:50%}
+.mcell.sel{background:rgba(200,164,77,.12)}
+.mcell.sel:not(.today) .num{border:1px solid var(--gold);border-radius:50%}
+.mdots{display:flex;gap:3px;justify-content:center;align-items:center;margin-top:5px;min-height:8px}
+.mdot{width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.mcount{font-size:.56rem;color:var(--gold-soft);margin-left:2px}
+.mcell.closed .num{color:var(--cream-dim);text-decoration:line-through}
+
+/* Liste des réservations du jour sélectionné (sous le mois) */
+.mv-daylist{border-top:1px solid var(--line);padding:1.1rem clamp(.8rem,2vw,1.4rem);background:rgba(8,18,24,.4)}
+.mv-daylist h5{font-family:var(--serif);font-size:1.3rem;color:var(--gold-soft);margin-bottom:.6rem;text-transform:capitalize}
+.dl-item{display:flex;align-items:center;gap:1rem;padding:.7rem 0;border-bottom:1px dotted rgba(200,164,77,.16);cursor:pointer;transition:.2s}
+.dl-item:hover{padding-left:.3rem}
+.dl-time{font-family:var(--serif);font-size:1.15rem;color:var(--gold);width:58px;flex:0 0 58px}
+.dl-main{flex:1;min-width:0}
+.dl-main b{display:block;color:var(--cream);font-size:.98rem}
+.dl-main span{font-size:.78rem;color:var(--cream-dim)}
+.dl-party{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold-soft);white-space:nowrap}
+.dl-empty{color:var(--cream-dim);padding:1rem 0}
+
+/* Timeline (jour/semaine) — blocs plus compacts */
+.resa-block b{font-size:.7rem}
+.tl-colhead b{font-size:1rem}
+
+/* ---------- MOBILE ---------- */
+@media(max-width:720px){
+  .cx-bar{gap:.6rem}
+  .cx-views{width:100%}
+  .cx-views button{flex:1;padding:.55rem .3rem;font-size:.66rem}
+  .cx-nav{order:2}
+  .cx-stats{order:3;width:100%}
+  .cx-stat{flex:1}
+  .cx-title{font-size:1.3rem}
+  .cap-bar{font-size:.78rem}
+
+  /* Mois : cellules compactes, pas de texte, juste pastilles */
+  .mcell{min-height:46px;padding:.3rem 0}
+  .mcell .num{width:22px;height:22px;font-size:.8rem}
+  .mv-dow span{font-size:.55rem;padding:.4rem 0}
+
+  /* Semaine : défilement horizontal, colonnes lisibles */
+  .tl-wrap{overflow-x:auto}
+  .tl-cols{min-width:640px}
+  .tl-head{min-width:calc(640px + 42px)}
+  .tl-colhead b{font-size:.85rem}
+  .tl-colhead span{font-size:.55rem}
+  .resa-block{padding:.15rem .3rem}
+  .resa-block b{font-size:.62rem}
+  .resa-block span{font-size:.54rem}
+
+  /* Année : 2 colonnes déjà, réduire le texte */
+  .yv-grid{grid-template-columns:repeat(2,1fr);gap:.7rem;padding:.6rem}
+  .ymini h4{font-size:1.05rem}
+  .ymini .yd{font-size:.55rem}
+}
+@media(max-width:400px){
+  .cx-stat b{font-size:1.2rem}
+  .mv-daylist h5{font-size:1.1rem}
 }

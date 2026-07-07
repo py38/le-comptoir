@@ -43,6 +43,8 @@
   var vView = 'month';
   var cursor = new Date(); cursor.setHours(0, 0, 0, 0);
   var initDone = false;
+  var monthByDate = {};   // réservations du mois affiché, groupées par date
+  var selDay = null;      // jour sélectionné (liste iPhone)
 
   function initDash() {
     if (initDone) { refresh(); return; } initDone = true;
@@ -64,6 +66,18 @@
       store.setDefaultCapacity(n).then(refresh);
     });
 
+    // Swipe latéral façon iPhone (sauf en vue Semaine qui défile à l'horizontale)
+    var canvas = document.getElementById('cxCanvas');
+    var sx = null, sy = null;
+    canvas.addEventListener('touchstart', function (e) { var t = e.changedTouches[0]; sx = t.clientX; sy = t.clientY; }, { passive: true });
+    canvas.addEventListener('touchend', function (e) {
+      if (sx == null || vView === 'week') { sx = null; return; }
+      var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.4) step(dx < 0 ? 1 : -1);
+      sx = null;
+    }, { passive: true });
+    canvas.addEventListener('animationend', function () { canvas.classList.remove('anim-l', 'anim-r'); });
+
     // modal
     document.getElementById('rzClose').addEventListener('click', closeModal);
     document.getElementById('rzModal').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
@@ -77,6 +91,8 @@
     else if (vView === 'week') cursor = addDays(cursor, dir * 7);
     else if (vView === 'month') cursor = new Date(cursor.getFullYear(), cursor.getMonth() + dir, 1);
     else cursor = new Date(cursor.getFullYear() + dir, 0, 1);
+    var canvas = document.getElementById('cxCanvas');
+    if (canvas) { canvas.classList.remove('anim-l', 'anim-r'); void canvas.offsetWidth; canvas.classList.add(dir > 0 ? 'anim-l' : 'anim-r'); }
     refresh();
   }
 
@@ -128,41 +144,53 @@
     });
   }
 
-  /* ---------- MOIS ---------- */
+  /* ---------- MOIS (style iPhone : pastilles + liste du jour) ---------- */
   function renderMonth() {
     var y = cursor.getFullYear(), m = cursor.getMonth();
     var gridStart = startOfWeek(new Date(y, m, 1));
     var gridEnd = addDays(gridStart, 41);
     Promise.all([store.getRangeInfo(ymd(gridStart), ymd(gridEnd)), store.getBookingsRange(ymd(gridStart), ymd(gridEnd))])
       .then(function (res) {
-        var info = res[0], byDate = groupByDate(res[1]);
+        var info = res[0]; monthByDate = groupByDate(res[1]);
+        // jour sélectionné par défaut : aujourd'hui si dans le mois, sinon le 1er
+        var inThisMonth = function (ds) { var d = new Date(ds + 'T00:00'); return d.getMonth() === m && d.getFullYear() === y; };
+        if (!selDay || !inThisMonth(selDay)) selDay = inThisMonth(today()) ? today() : y + '-' + pad(m + 1) + '-01';
+
         var html = '<div class="mv-dow"><span>Lun</span><span>Mar</span><span>Mer</span><span>Jeu</span><span>Ven</span><span>Sam</span><span>Dim</span></div><div class="mv-grid">';
         for (var i = 0; i < 42; i++) {
           var d = addDays(gridStart, i), ds = ymd(d);
-          var inf = info[ds] || {}, list = byDate[ds] || [];
+          var inf = info[ds] || {}, list = monthByDate[ds] || [], count = list.length;
           var cls = 'mcell';
           if (d.getMonth() !== m) cls += ' other';
           if (ds === today()) cls += ' today';
           if (inf.closed) cls += ' closed';
-          var used = list.reduce(function (s, b) { return s + b.party_size; }, 0);
-          html += '<div class="' + cls + '" data-day="' + ds + '">' +
-            '<div class="num">' + d.getDate() + '</div>' +
-            (inf.closed ? '<div class="use" style="color:var(--cream-dim)">Fermé</div>' : (used ? '<div class="use">' + used + '/' + inf.capacity + ' couv.</div>' : '')) +
-            list.slice(0, 2).map(function (b) { return '<div class="mchip" data-id="' + b.id + '">' + b.time + ' · ' + esc(b.name) + ' (' + b.party_size + ')</div>'; }).join('') +
-            (list.length > 2 ? '<div class="mmore">+' + (list.length - 2) + ' autres</div>' : '') +
-            '</div>';
+          if (ds === selDay) cls += ' sel';
+          var dots = '';
+          if (count) { for (var k = 0; k < Math.min(count, 3); k++) dots += '<span class="mdot"></span>'; if (count > 3) dots += '<span class="mcount">' + count + '</span>'; }
+          html += '<div class="' + cls + '" data-day="' + ds + '"><div class="num">' + d.getDate() + '</div><div class="mdots">' + dots + '</div></div>';
         }
-        html += '</div>';
+        html += '</div><div class="mv-daylist" id="mvList"></div>';
         var canvas = document.getElementById('cxCanvas'); canvas.innerHTML = html;
         canvas.querySelectorAll('.mcell').forEach(function (c) {
-          c.addEventListener('click', function (e) {
-            var chip = e.target.closest('.mchip');
-            if (chip) { openBooking(chip.getAttribute('data-id')); return; }
-            cursor = new Date(c.getAttribute('data-day') + 'T00:00'); vView = 'day';
-            setActiveView('day'); refresh();
-          });
+          if (c.classList.contains('other')) return;
+          c.addEventListener('click', function () { selDay = c.getAttribute('data-day'); renderMonthList(); });
         });
+        renderMonthList();
       });
+  }
+
+  function renderMonthList() {
+    var canvas = document.getElementById('cxCanvas');
+    canvas.querySelectorAll('.mcell').forEach(function (c) { c.classList.toggle('sel', c.getAttribute('data-day') === selDay && !c.classList.contains('other')); });
+    var el = document.getElementById('mvList'); if (!el) return;
+    var list = (monthByDate[selDay] || []).slice().sort(function (a, b) { return a.time < b.time ? -1 : 1; });
+    var head = '<h5>' + new Date(selDay + 'T00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) + '</h5>';
+    el.innerHTML = head + (list.length ? list.map(function (b) {
+      return '<div class="dl-item" data-id="' + b.id + '"><div class="dl-time">' + b.time + '</div>' +
+        '<div class="dl-main"><b>' + esc(b.name) + '</b><span>' + esc(b.phone) + (b.note ? ' · ' + esc(b.note) : '') + '</span></div>' +
+        '<div class="dl-party">' + b.party_size + ' pers.</div></div>';
+    }).join('') : '<p class="dl-empty">Aucune réservation ce jour.</p>');
+    el.querySelectorAll('.dl-item').forEach(function (it) { it.addEventListener('click', function () { openBooking(it.getAttribute('data-id')); }); });
   }
 
   /* ---------- JOUR ---------- */

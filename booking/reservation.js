@@ -77,15 +77,17 @@
     store.getDayInfo(ds).then(function (info) {
       if (info.closed) { elClosed.hidden = false; elRemaining.hidden = true; form.hidden = true; return; }
       elClosed.hidden = true;
-      elRemaining.hidden = false;
-      elRemaining.innerHTML = '<strong>' + info.remaining + '</strong> couvert' + (info.remaining > 1 ? 's' : '') + ' encore disponible' + (info.remaining > 1 ? 's' : '') + ' ce jour.';
+      // Le nombre de couverts reste interne : le client ne le voit pas.
+      if (info.remaining <= 0) {
+        elRemaining.hidden = false;
+        elRemaining.textContent = 'Complet pour cette date.';
+        form.hidden = true;
+        return;
+      }
+      elRemaining.hidden = true;
       var times = Hours.genTimes(ds);
       fTime.innerHTML = times.map(function (t) { return '<option>' + t + '</option>'; }).join('');
-      // limiter les personnes au restant
-      var partySel = document.getElementById('fParty');
-      [].forEach.call(partySel.options, function (op) { op.disabled = parseInt(op.value, 10) > info.remaining; });
-      form.hidden = info.remaining <= 0;
-      if (info.remaining <= 0) { elRemaining.innerHTML = 'Complet pour cette date.'; }
+      form.hidden = false;
     });
   }
 
@@ -102,7 +104,12 @@
     store.createBooking({ date: selectedDate, time: time, party: party, name: name, phone: phone, note: note })
       .then(function (r) {
         btn.disabled = false;
-        if (!r.ok) { msg.className = 'bk-msg err'; msg.textContent = r.reason || 'Réservation impossible.'; selectDate(selectedDate); return; }
+        if (!r.ok) {
+          // message générique côté client (ne pas révéler le nombre de couverts)
+          msg.className = 'bk-msg err';
+          msg.textContent = 'Désolé, plus de disponibilité pour ce nombre de personnes à cette date. Essayez une autre date ou un groupe plus petit.';
+          selectDate(selectedDate); return;
+        }
         showConfirm({ date: selectedDate, time: time, name: name, party: party });
       });
   });
