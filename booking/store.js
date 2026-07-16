@@ -56,7 +56,10 @@
     var books = lsGet(LS_BOOK, []);
     return svcs.sort(function (a, b) { return (a.sort - b.sort) || (a.start_time < b.start_time ? -1 : 1); }).map(function (s) {
       var o = ovr[ovrKey(dateStr, s.id)] || {};
-      var cap = (typeof o.capacity === 'number') ? o.capacity : s.capacity;
+      // priorité : date précise > jour de semaine > défaut
+      var byDay = (s.caps_by_day || {})[String(dow(dateStr))];
+      var cap = (typeof o.capacity === 'number') ? o.capacity
+              : (typeof byDay === 'number') ? byDay : s.capacity;
       var closed = !!o.closed;
       var booked = books.filter(function (b) { return b.date === dateStr && b.service_id === s.id && b.status === 'confirmed'; })
         .reduce(function (n, b) { return n + b.party_size; }, 0);
@@ -149,7 +152,7 @@
       },
       saveService: function (s) {
         var row = { name: s.name, start_time: s.start_time, end_time: s.end_time, capacity: s.capacity,
-                    weekdays: s.weekdays, sort: s.sort, active: s.active !== false };
+                    weekdays: s.weekdays, caps_by_day: s.caps_by_day || {}, sort: s.sort, active: s.active !== false };
         var q = s.id ? sb.from('services').update(row).eq('id', s.id) : sb.from('services').insert(row);
         return q.then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; });
       },

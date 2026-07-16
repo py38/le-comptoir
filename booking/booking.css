@@ -368,3 +368,34 @@
 /* réservation terminée : couverts libérés */
 .tlx-block.done{opacity:.45;border-left-color:var(--cream-dim)}
 .dl-item.done{opacity:.5}
+
+/* ============================================================
+   Couverts par jour de semaine + correctifs MOBILE des modals
+   ============================================================ */
+.cap-day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem}
+.cd{display:flex!important;flex-direction:column;gap:.2rem;text-transform:none;letter-spacing:0}
+.cd span{font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;color:var(--cream-dim);text-align:center}
+.cd input{width:100%;text-align:center;padding:.4rem .1rem;font-size:.85rem;background:rgba(8,18,24,.6);border:1px solid var(--line);color:var(--cream);font-family:var(--sans)}
+.cd input:focus{outline:none;border-color:var(--gold)}
+
+/* Les modals doivent défiler sur petit écran */
+.rz-card{max-height:88vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+/* le bouton + ne doit jamais passer au-dessus d'un modal */
+.add-fab{z-index:40}
+.rz-modal{z-index:960}
+
+@media(max-width:640px){
+  .rz-card{padding:1.4rem 1rem;max-height:92vh}
+  .rz-card--wide{max-width:100%}
+  /* Liste des services : une ligne = bloc lisible */
+  .svc-row{flex-direction:column;align-items:stretch;gap:.5rem}
+  .svc-row > div:last-child{display:flex;gap:.4rem}
+  .svc-row .mini{margin:0;flex:1;text-align:center}
+  .svc-row i{display:block;margin-top:.2rem}
+  /* Couverts par jour : 4 colonnes pour rester lisible */
+  .cap-day-grid{grid-template-columns:repeat(4,1fr);gap:.4rem}
+  .svc-help{font-size:.8rem}
+  /* Barre des services (vue Jour) : chips en colonne */
+  .svc-chip{display:flex;width:100%;flex-wrap:wrap;margin:0 0 .4rem 0}
+  .svc-chip b{flex:1 0 100%}
+}
