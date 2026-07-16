@@ -188,115 +188,234 @@
   </div>
 
   <div class="menu__tabs" id="menuTabs" data-reveal>
-    <button class="active" data-tab="mer">Produits de la mer</button>
-    <button data-tab="terre">Produits de la terre</button>
-    <button data-tab="partager">À partager</button>
-    <button data-tab="plats">Nos plats</button>
-    <button data-tab="tartares">Tartares &amp; Carpaccios</button>
+    <button class="active" data-tab="formules">Formules</button>
+    <button data-tab="entrees">Entrées</button>
+    <button data-tab="plats">Plats</button>
+    <button data-tab="pates">Tartares, Pâtes &amp; Burgers</button>
+    <button data-tab="salades">Salades</button>
     <button data-tab="desserts">Desserts</button>
-    <button data-tab="vitrine">La vitrine sucrée</button>
-    <button data-tab="pozzetto">Glaces &amp; Sorbets</button>
+    <button data-tab="glaces">Glaces &amp; Sorbets</button>
+    <button data-tab="cocktails">Cocktails</button>
+    <button data-tab="mocktails">Mocktails</button>
+    <button data-tab="boissons">Boissons</button>
   </div>
 
   <div class="menu__panels">
 
-    <!-- MER -->
-    <div class="menu__panel active" data-panel="mer">
-      <div class="dish"><div class="dish__head"><h3>Carpaccio de mérou aux agrumes</h3><span class="dish__price">15&nbsp;000</span></div><p>Fines lamelles de mérou, suprêmes d'agrumes et huile parfumée.</p></div>
-      <div class="dish"><div class="dish__head"><h3>« Dévoué » de bar</h3><span class="dish__price">24&nbsp;000</span></div><p>Tartare de bar, agrumes et condiments délicats.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Tartare de saumon, hibiscus</h3><span class="dish__price">32&nbsp;000</span></div><p>Saumon au couteau, infusion d'hibiscus.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Saumon fumé d'Écosse à la ficelle</h3><span class="dish__price">15&nbsp;000</span></div><p>Fumé maison, blinis et crème.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Tataki de thon, miso, teriyaki</h3><span class="dish__price">24&nbsp;000</span></div><p>Thon juste saisi, laque teriyaki et miso.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Gambas croustillantes</h3><span class="dish__price">16&nbsp;000</span></div><p>Crème cheese aux herbes et chou croquant.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Ceviche de poulpe</h3><span class="dish__price">22&nbsp;000</span></div><p>Citron &amp; huile d'olive, condiment carotte-gingembre.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Ravioles de gambas ouvertes, ricotta</h3><span class="dish__price">14&nbsp;000</span></div><p>Gambas, ricotta et bouillon parfumé.</p></div>
+    <!-- FORMULES -->
+    <div class="menu__panel active" data-panel="formules">
+      <p class="menu__note">Service continu de midi à minuit · Petit-déjeuner jusqu'à 11h</p>
+      <div class="dish"><div class="dish__head"><h3>Le Parisien</h3><span class="dish__price">10&nbsp;000</span></div><p>Formule petit-déjeuner, servie jusqu'à 11h.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Le Comptoir</h3><span class="dish__price">13&nbsp;000</span></div><p>Formule petit-déjeuner complète, servie jusqu'à 11h.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Formule Midi — 2 services</h3><span class="dish__price">20&nbsp;000</span></div><p>Entrée + plat, ou plat + dessert.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Formule Midi — 3 services</h3><span class="dish__price">23&nbsp;000</span></div><p>Entrée + plat + dessert.</p></div>
+      <p class="menu__note">Nos champagnes « à la coupe » · Billecart-Salmon</p>
+      <div class="dish"><div class="dish__head"><h3>La Coupe de Billecart — Brut</h3><span class="dish__price">16&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>La Coupe 1818</h3><span class="dish__price">12&nbsp;000</span></div><p>10 000 F au bar.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Le Kir Royal ou Mimosa</h3><span class="dish__price">13&nbsp;000</span></div></div>
+      <p class="menu__note">Tea time · les pâtisseries de notre Cheffe Lina — Tapas &amp; snacks à partager dès 18h en terrasse</p>
     </div>
 
-    <!-- TERRE -->
-    <div class="menu__panel" data-panel="terre">
-      <div class="dish"><div class="dish__head"><h3>Aubergine rôtie au chèvre</h3><span class="dish__price">14&nbsp;000</span></div><p>Edamame, crème aux herbes, menthe &amp; épinards.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Bœuf sauté au miso</h3><span class="dish__price">19&nbsp;000</span></div><p>Émincé de bœuf laqué, sauce miso.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Tartare à la tomate, burrata &amp; pesto</h3><span class="dish__price">20&nbsp;000</span></div><p>Tomate, burrata crémeuse et pesto maison.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Gros marronnais du Comptoir</h3><span class="dish__price">10&nbsp;000</span></div><p>Moutarde à l'ancienne et croûtons de pain.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Brave de champignons</h3><span class="dish__price">18&nbsp;000</span></div><p>Beurre blanc à l'estragon, escargots en persillade.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Saint-Marcellin rôti</h3><span class="dish__price">14&nbsp;000</span></div><p>Pain aux céréales et salade.</p></div>
-    </div>
+    <!-- ENTRÉES -->
+    <div class="menu__panel" data-panel="entrees">
+      <p class="menu__note">Poissons &amp; crustacés</p>
+      <div class="dish"><div class="dish__head"><h3>Carpaccio de mérou au citron vert de Côte d'Ivoire</h3><span class="dish__price">15&nbsp;000</span></div><p>Produit cru.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Ceviche de bar au gingembre</h3><span class="dish__price">17&nbsp;000</span></div><p>Produit cru.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Tartelette au crabe, avocat &amp; pamplemousse</h3><span class="dish__price">21&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Tartare avocat-crevettes, spicy mayo</h3><span class="dish__price">15&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Tartare de thon &amp; avocat, crème fine de cacahuète</h3><span class="dish__price">15&nbsp;000</span></div><p>Produit cru.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Sashimi de thon, légumes croquants</h3><span class="dish__price">18&nbsp;000</span></div><p>Produit cru.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Rillettes de thon « maison »</h3><span class="dish__price">17&nbsp;000</span></div><p>Pour 2 personnes.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Poulpe cuit à basse température</h3><span class="dish__price">16&nbsp;000</span></div><p>Coulis de poivron rouge, chorizo (porc).</p></div>
+      <div class="dish"><div class="dish__head"><h3>Ravioles de gambas ouvertes, ricotta</h3><span class="dish__price">15&nbsp;000</span></div></div>
 
-    <!-- À PARTAGER -->
-    <div class="menu__panel" data-panel="partager">
-      <p class="menu__note">Pensé pour deux convives.</p>
-      <div class="dish"><div class="dish__head"><h3>Pizzetti burrata, jambon de Parme</h3><span class="dish__price">24&nbsp;000</span></div><p>Burrata, jambon de Parme et tomate séchée.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Pizzetti burrata, tartufata</h3><span class="dish__price">22&nbsp;000</span></div><p>Burrata, tartufata et épinards.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Planche de jambon ibérique</h3><span class="dish__price">30&nbsp;000</span></div><p>Pata negra finement tranché.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Notre Veggie</h3><span class="dish__price">14&nbsp;000</span></div><p>Tartine végétale du Comptoir, légumes &amp; céréales.</p></div>
+      <p class="menu__note">Les entrées signatures</p>
+      <div class="dish"><div class="dish__head"><h3>Aubergine rôtie au chèvre</h3><span class="dish__price">12&nbsp;000</span></div><p>Tomate séchée, pousses d'épinards &amp; olives.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Burrata au pesto</h3><span class="dish__price">19&nbsp;000</span></div><p>Tomates cerises, olives &amp; roquette.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Bœuf sauté au miso</h3><span class="dish__price">17&nbsp;000</span></div></div>
+
+      <p class="menu__note">Les classiques</p>
+      <div class="dish"><div class="dish__head"><h3>Terrine de foie gras maison, chutney</h3><span class="dish__price">28&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Saumon fumé, crème citronnée</h3><span class="dish__price">29&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>12 gros escargots de Bourgogne</h3><span class="dish__price">28&nbsp;000</span></div><p>Beurre persillé.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Œufs coulants bénédicte au saumon</h3><span class="dish__price">21&nbsp;000</span></div><p>Sabayon au champagne.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Œufs bio mayonnaise, salade verte</h3><span class="dish__price">14&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Assiette de jambon d'exception</h3><span class="dish__price">18&nbsp;000</span></div></div>
     </div>
 
     <!-- PLATS -->
     <div class="menu__panel" data-panel="plats">
-      <div class="dish"><div class="dish__head"><h3>Entrecôte de bœuf Simmental · 380g</h3><span class="dish__price">36&nbsp;000</span></div><p>Sauce béarnaise et frites maison.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Filet de bœuf Angus</h3><span class="dish__price">36&nbsp;000</span></div><p>Poivre de raffia et frites.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Filet mignon de veau</h3><span class="dish__price">32&nbsp;000</span></div><p>Coquillettes à la tartufata, sauce porto truffée.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Entrecôte de veau, sauce soubise</h3><span class="dish__price">30&nbsp;000</span></div><p>Pommes paillasson.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Suprême de cochon basse température</h3><span class="dish__price">30&nbsp;000</span></div><p>Gnocchis, sauce moutarde et gratin de riz.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Suprême de canard, sauce bigarade</h3><span class="dish__price">29&nbsp;000</span></div><p>Carotte et agrumes.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Onglet de bœuf Black Angus</h3><span class="dish__price">23&nbsp;000</span></div><p>Compotée d'oignon au miel, pommes paillasson.</p></div>
+      <p class="menu__note">Poissons &amp; fruits de mer d'ici et d'ailleurs</p>
+      <div class="dish"><div class="dish__head"><h3>Pavé de mérou, beurre blanc au curcuma façon Comptoir</h3><span class="dish__price">28&nbsp;000</span></div><p>Courgettes confites, coquillages et purée de pommes de terre.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Pavé de saumon snacké, gnocchis maison</h3><span class="dish__price">29&nbsp;000</span></div><p>Crème à l'aneth, parmesan et tomates séchées.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Pavé de bar, déclinaison de pommes de terre</h3><span class="dish__price">26&nbsp;000</span></div><p>Jus émulsionné à la truffe.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Poulpe grillé à la gremolata</h3><span class="dish__price">28&nbsp;000</span></div><p>Pommes écrasées &amp; crème de ciboulette.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Steak de thon à la plancha</h3><span class="dish__price">21&nbsp;000</span></div><p>Crème d'olive noire &amp; patate douce rôtie.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Gambas snackées, sauce vierge à l'ivoirienne</h3><span class="dish__price">28&nbsp;000</span></div><p>Riz blanc.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Sole de Bretagne entière à la plancha</h3><span class="dish__price">45&nbsp;000</span></div><p>Purée légère de pommes de terre.</p></div>
+
+      <p class="menu__note">Viandes</p>
+      <div class="dish"><div class="dish__head"><h3>Entrecôte de bœuf Simental · 350 g</h3><span class="dish__price">37&nbsp;000</span></div><p>Sauce béarnaise, frites.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Filet de bœuf, sauce poivre de Baffia</h3><span class="dish__price">29&nbsp;000</span></div><p>Frites.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Magret de canard, sauce bigarade</h3><span class="dish__price">32&nbsp;000</span></div><p>Gratin de pommes de terre.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Souris d'agneau du Comptoir, jus épicé</h3><span class="dish__price">29&nbsp;000</span></div><p>Mousseline de patate douce, tomate séchée.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Entrecôte de veau, sauce porto truffe</h3><span class="dish__price">34&nbsp;000</span></div><p>Coquillettes à la truffe.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Poitrine de cochon du Cantal à la plancha</h3><span class="dish__price">28&nbsp;000</span></div><p>Sauce moutarde miso à l'ancienne, purée de pommes de terre.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Côtes d'agneau, jus au thym</h3><span class="dish__price">36&nbsp;000</span></div><p>Haricots verts, tomate &amp; olives.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Côte de veau, crème aux morilles</h3><span class="dish__price">37&nbsp;000</span></div><p>Pommes sautées.</p></div>
+      <p class="menu__note">Changement de garnitures &amp; suppléments — 4 000 F · Jeunes pousses d'épinards — 5 000 F<br>Légumes poêlés · Salade verte · Risotto de coquillettes à la truffe · Gnocchis · Haricots verts</p>
     </div>
 
-    <!-- TARTARES -->
-    <div class="menu__panel" data-panel="tartares">
-      <div class="dish"><div class="dish__head"><h3>Tartare de bœuf au couteau</h3><span class="dish__price">24&nbsp;000</span></div><p>Frites et salade.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Carpaccio de bœuf à l'italienne</h3><span class="dish__price">19&nbsp;000</span></div><p>Câpres, parmesan, frites et salade.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Chiffonnade de filet mignon de veau bio</h3><span class="dish__price">24&nbsp;000</span></div><p>Condiment césar, frites et salade.</p></div>
+    <!-- TARTARES, PÂTES & BURGERS -->
+    <div class="menu__panel" data-panel="pates">
+      <p class="menu__note">Tartare &amp; Carpaccio</p>
+      <div class="dish"><div class="dish__head"><h3>Tartare de bœuf au couteau, « dressé devant vous »</h3><span class="dish__price">24&nbsp;000</span></div><p>Frites et salade. Produit cru.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Carpaccio de bœuf, câpres, parmesan</h3><span class="dish__price">19&nbsp;000</span></div><p>Frites &amp; salade. Produit cru.</p></div>
+
+      <p class="menu__note">Pâtes</p>
+      <div class="dish"><div class="dish__head"><h3>Les fameuses « Rigatoni » à la tartufata</h3><span class="dish__price">25&nbsp;000</span></div><p>Burrata du Comptoir.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Linguines aux gambas, « comme à l'ouverture »</h3><span class="dish__price">28&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Linguines au bœuf Stroganoff</h3><span class="dish__price">26&nbsp;000</span></div></div>
+
+      <p class="menu__note">Burgers</p>
+      <div class="dish"><div class="dish__head"><h3>Smash burger</h3><span class="dish__price">19&nbsp;000</span></div><p>Sauce aurore, oignon rouge, comté, frites.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Burger raclette</h3><span class="dish__price">19&nbsp;000</span></div><p>Sauce cocktail, oignon rouge, fromage à raclette, tomate séchée, frites.</p></div>
+    </div>
+
+    <!-- SALADES -->
+    <div class="menu__panel" data-panel="salades">
+      <p class="menu__note">Disponibles en entrée ou en plat</p>
+      <div class="dish"><div class="dish__head"><h3>Salade de gambas, légumes du moment</h3><span class="dish__price">26&nbsp;000</span></div><p>Vinaigrette. En entrée : 14 000 F · en plat : 26 000 F.</p></div>
+      <div class="dish"><div class="dish__head"><h3>« Salade César » à notre façon</h3><span class="dish__price">19&nbsp;000</span></div><p>Poulet croustillant. En entrée : 10 000 F · en plat : 19 000 F.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Salade de bœuf à la japonaise</h3><span class="dish__price">24&nbsp;000</span></div><p>En entrée : 13 000 F · en plat : 24 000 F.</p></div>
     </div>
 
     <!-- DESSERTS -->
     <div class="menu__panel" data-panel="desserts">
-      <p class="menu__note">Les incontournables.</p>
-      <div class="dish"><div class="dish__head"><h3>Pain perdu maison</h3><span class="dish__price">8&nbsp;000</span></div><p>Avec sa boule de glace vanille.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Mi-cuit au chocolat</h3><span class="dish__price">9&nbsp;000</span></div><p>Avec sa boule de glace vanille.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Crème brûlée</h3><span class="dish__price">8&nbsp;000</span></div><p>À la vanille de Madagascar.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Tiramisu Nuage</h3><span class="dish__price">9&nbsp;500</span></div><p>Touche d'amaretto.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Tiramisu Matcha</h3><span class="dish__price">10&nbsp;000</span></div><p>Crème légère, biscuit imbibé au matcha.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Riz au lait intensément vanillé</h3><span class="dish__price">9&nbsp;000</span></div><p>Beurre salé, noisettes &amp; sarrasin.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Crumble aux pommes</h3><span class="dish__price">10&nbsp;000</span></div><p>Pommes caramélisées, crème légère à la fève de Tonka.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Profiteroles Le Comptoir</h3><span class="dish__price">9&nbsp;500</span></div><p>Glaces vanille &amp; chocolat, sauce chocolat chaud.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Café très gourmand</h3><span class="dish__price">9&nbsp;500</span></div><p>Un café et son assortiment de mignardises.</p></div>
-      <div class="dish"><div class="dish__head"><h3>Mousse tout-choco</h3><span class="dish__price">8&nbsp;000</span></div><p>Avec une pointe de fleur de sel.</p></div>
+      <p class="menu__note">Les incontournables</p>
+      <div class="dish"><div class="dish__head"><h3>Pain perdu maison</h3><span class="dish__price">9&nbsp;500</span></div><p>Brioche maison, boule de glace vanille.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Mi-cuit au chocolat</h3><span class="dish__price">9&nbsp;500</span></div><p>Boule de glace vanille.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Crème brûlée à la vanille de Madagascar</h3><span class="dish__price">8&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Café très gourmand</h3><span class="dish__price">8&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Champagne gourmand</h3><span class="dish__price">17&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Tiramisu Nuage</h3><span class="dish__price">9&nbsp;500</span></div><p>Amaretto.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Riz au lait intensément vanillé</h3><span class="dish__price">9&nbsp;000</span></div><p>Caramel &amp; noisettes.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Crumble aux pommes, fève de Tonka</h3><span class="dish__price">10&nbsp;000</span></div><p>Glace vanille.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Profiteroles « Le Comptoir »</h3><span class="dish__price">9&nbsp;500</span></div><p>Glaces vanille &amp; chocolat, sauce chocolat chaud.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Tiramisù matcha</h3><span class="dish__price">10&nbsp;000</span></div><p>Crème légère &amp; biscuit imbibé au thé vert japonais.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Mousse tout-choco</h3><span class="dish__price">8&nbsp;000</span></div><p>Avec fleur de sel.</p></div>
       <div class="dish"><div class="dish__head"><h3>Salade de fruits frais</h3><span class="dish__price">7&nbsp;000</span></div><p>Sirop infusé à la vanille de Madagascar.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Irish coffee</h3><span class="dish__price">12&nbsp;000</span></div><p>Café, whiskey irlandais &amp; crème fouettée.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Desserts du moment</h3><span class="dish__price">9&nbsp;500</span></div><p>Le chariot de notre cheffe pâtissière : un large choix de créations maison.</p></div>
     </div>
 
-    <!-- VITRINE -->
-    <div class="menu__panel" data-panel="vitrine">
-      <p class="menu__note">La vitrine de notre Cheffe Lina et son équipe.</p>
-      <div class="dish"><div class="dish__head"><h3>Paris-Brest</h3><span class="dish__price">8&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Pavlova chocolat &amp; praliné</h3><span class="dish__price">8&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Tarte au citron</h3><span class="dish__price">8&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Macaron vanille de Madagascar &amp; framboises</h3><span class="dish__price">9&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Fraisier</h3><span class="dish__price">9&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Framboisier</h3><span class="dish__price">9&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Tarte vanille de Madagascar &amp; fraise</h3><span class="dish__price">9&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Tarte pistache framboise</h3><span class="dish__price">9&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Tarte café vanille de Madagascar</h3><span class="dish__price">9&nbsp;000</span></div></div>
-      <div class="dish"><div class="dish__head"><h3>Tarte pistache fleur d'oranger</h3><span class="dish__price">9&nbsp;000</span></div></div>
-    </div>
-
-    <!-- POZZETTO -->
-    <div class="menu__panel" data-panel="pozzetto">
-      <p class="menu__note">Pozzetto · glaces &amp; sorbets artisanaux — 1 boule 2&nbsp;500 · 2 boules 4&nbsp;500 · 3 boules 7&nbsp;000</p>
+    <!-- GLACES & SORBETS -->
+    <div class="menu__panel" data-panel="glaces">
+      <p class="menu__note">Glaces &amp; sorbets « maison » — 1 boule 2 500 F · 2 boules 4 500 F · 3 boules 7 000 F</p>
       <div class="pozzetto">
         <div class="pozzetto__col">
           <h4>Les glaces</h4>
-          <ul>
-            <li>Vanille bourbon</li><li>Chocolat noir</li><li>Gianduja di pozzetto</li><li>Chocolat blanc</li><li>Cannelle</li><li>Caramel beurre salé</li><li>Café Costadora</li><li>Noisette</li><li>Pistache di pozzetto</li><li>Matcha (thé vert japonais)</li><li>Violette</li>
-          </ul>
+          <ul><li>Vanille Bourbon</li><li>Chocolat noir</li><li>Gianduja</li><li>Caramel beurre salé</li><li>Café Costadora</li><li>Pistache</li><li>Matcha (thé vert japonais)</li></ul>
         </div>
         <div class="pozzetto__col">
           <h4>Les sorbets</h4>
-          <ul>
-            <li>Citron</li><li>Banane</li><li>Mangue</li><li>Fraise</li><li>Framboise</li><li>Noix de coco</li>
-          </ul>
+          <ul><li>Citron</li><li>Mangue</li><li>Fraise</li><li>Framboise</li><li>Noix de coco</li></ul>
         </div>
       </div>
+    </div>
+
+    <!-- COCKTAILS -->
+    <div class="menu__panel" data-panel="cocktails">
+      <p class="menu__note">Nos cocktails signatures — 12 000 F</p>
+      <div class="dish"><div class="dish__head"><h3>Kentucky day</h3><span class="dish__price">12&nbsp;000</span></div><p>12 cl · Frais, puissant — Bourbon, ananas, citron, melon, passion.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Le Comte de Cocody</h3><span class="dish__price">12&nbsp;000</span></div><p>12 cl · Épicé, fumé, acidulé — Mezcal, tequila, triple sec, citron, mangue épicée, fleur de sel.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Petit goumin</h3><span class="dish__price">12&nbsp;000</span></div><p>11 cl · Fruité, piquant, intense — Rhum dark, gingembre, fruits rouges, passion, citron.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Fleur du printemps</h3><span class="dish__price">12&nbsp;000</span></div><p>12 cl · Acidulé, floral — Gin Citadelle jardin d'été, yuzu, fleur de sureau, citron, infusion jasmin, bitter maison.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Le gouverneur</h3><span class="dish__price">12&nbsp;000</span></div><p>8 cl · Doux, acidulé, puissant — Rhum dark, bourbon, sirop de vanille, mousse passion-orgeat, Angostura.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Caprice d'été</h3><span class="dish__price">12&nbsp;000</span></div><p>18 cl · Rafraîchissant, léger — Tequila Silver, liqueur de mandarine, sirop d'essence de citron, bitter piment, eau gazeuse.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Douceur d'ivoire</h3><span class="dish__price">12&nbsp;000</span></div><p>14 cl · Doux, fruité — Rhum dark, amaretto, mucilage de cacao, citron vert, coco, Angostura.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Spicy sunrise</h3><span class="dish__price">12&nbsp;000</span></div><p>16,5 cl · Épicé, équilibré — Rhum dark, jus de carotte, gingembre, St-Germain, liqueur d'orange, piment de Cayenne, citron.</p></div>
+      <div class="dish"><div class="dish__head"><h3>L'amoureuse</h3><span class="dish__price">12&nbsp;000</span></div><p>15 cl · Doux, fruité, parfumé — Purée de framboise, pêche, citronnelle, gin Citadelle jardin d'été, bitter cardamome.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Russian porn star</h3><span class="dish__price">12&nbsp;000</span></div><p>14 cl · Acidulé, exotique — Vodka, passion, liqueur de passion, vanille, citron, champagne.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Cocoa sour</h3><span class="dish__price">12&nbsp;000</span></div><p>10 cl · Frais, équilibré — Mucilage cacao, vodka, confit de gingembre.</p></div>
+
+      <p class="menu__note">Nos classiques — 10 000 F</p>
+      <div class="dish"><div class="dish__head"><h3>Spritz</h3><span class="dish__price">10&nbsp;000</span></div><p>25 cl · Apérol ou Campari, Prosecco, eau gazeuse.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Negroni</h3><span class="dish__price">10&nbsp;000</span></div><p>12 cl · Gin, Campari, vermouth rouge.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Margarita</h3><span class="dish__price">10&nbsp;000</span></div><p>12 cl · Tequila, Cointreau, citron vert, sel et piment.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Caipirinha</h3><span class="dish__price">10&nbsp;000</span></div><p>14 cl · Cachaça, citron vert, sucre de canne.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Ti-punch</h3><span class="dish__price">10&nbsp;000</span></div><p>10 cl · Rhum agricole, citron vert, sucre de canne.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Sours</h3><span class="dish__price">10&nbsp;000</span></div><p>12 cl · Amaretto, whisky, vodka ou gin — citron, sucre, Angostura.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Espresso martini</h3><span class="dish__price">10&nbsp;000</span></div><p>11 cl · Vodka, liqueur de café, espresso.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Mojito</h3><span class="dish__price">10&nbsp;000</span></div><p>25 cl · Classique, passion ou fruit rouge — rhum cubain blanc, citron vert, menthe.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Mules</h3><span class="dish__price">10&nbsp;000</span></div><p>25 cl · Moscow, London, Jamaican, Mexican ou French — spiritueux au choix, lime, ginger beer.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Saint Germain spritz</h3><span class="dish__price">15&nbsp;000</span></div><p>25 cl · Floral, raffiné — Liqueur St-Germain, Prosecco, tranche de citron.</p></div>
+      <p class="menu__note">Création d'exception — sans alcool 10 000 F · avec alcool 15 000 F<br>Notre barman crée un cocktail sur mesure selon vos goûts.</p>
+    </div>
+
+    <!-- MOCKTAILS -->
+    <div class="menu__panel" data-panel="mocktails">
+      <p class="menu__note">Nos mocktails (sans alcool) — 7 000 F</p>
+      <div class="dish"><div class="dish__head"><h3>Mon Afrique</h3><span class="dish__price">7&nbsp;000</span></div><p>19 cl · Fruité, épicé — Bissap, gingembre, mangue, sucre de canne.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Tropical Tiki</h3><span class="dish__price">7&nbsp;000</span></div><p>26 cl · Exotique, gourmand — Ananas, goyave, sweet coco-mangue, cannelle.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Doux Rêve</h3><span class="dish__price">7&nbsp;000</span></div><p>19 cl · Doux, velouté — Mangue, passion, fraise, pêche, citron.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Pikimin</h3><span class="dish__price">7&nbsp;000</span></div><p>20 cl · Piquant, floral — Passion, gingembre, fruits rouges, rose.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Mekong Song</h3><span class="dish__price">7&nbsp;000</span></div><p>21 cl · Frais, léger — Pomme, ananas, passion.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Baies de Nosy Be</h3><span class="dish__price">7&nbsp;000</span></div><p>23 cl · Fruité, vanillé — Goyave, ananas, passion, citron, vanille.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Coco-dy's</h3><span class="dish__price">7&nbsp;000</span></div><p>22 cl · Fruité, tropical — Passion, pomme, framboise, coco.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Noix Gourmande</h3><span class="dish__price">7&nbsp;000</span></div><p>24 cl · Crémeux, gourmand — Lait de coco, ananas, crème fraîche, sirop de noisette, chantilly.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Pluie d'Été</h3><span class="dish__price">7&nbsp;000</span></div><p>22 cl · Frais, herbacé — Pomme, basilic, citron, eau gazeuse.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Orient Extrême</h3><span class="dish__price">7&nbsp;000</span></div><p>22 cl · Fruité, intense — Passion, ananas, fruits rouges.</p></div>
+    </div>
+
+    <!-- BOISSONS -->
+    <div class="menu__panel" data-panel="boissons">
+      <p class="menu__note">Apéritifs</p>
+      <div class="dish"><div class="dish__head"><h3>Ricard / Pastis 51</h3><span class="dish__price">4&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Suze</h3><span class="dish__price">4&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Martini — Rouge, Blanc, Rosé</h3><span class="dish__price">5&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Campari</h3><span class="dish__price">5&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Porto Sandeman — Fine Ruby ou Blanc</h3><span class="dish__price">5&nbsp;000</span></div></div>
+
+      <p class="menu__note">Softs &amp; jus</p>
+      <div class="dish"><div class="dish__head"><h3>Coca / Coca zéro</h3><span class="dish__price">3&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Sprite</h3><span class="dish__price">3&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Orangina</h3><span class="dish__price">3&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Ice tea maison</h3><span class="dish__price">3&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Schweppes Tonic</h3><span class="dish__price">3&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Red Bull</h3><span class="dish__price">5&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Jus de fruits frais pressés minute</h3><span class="dish__price">5&nbsp;500</span></div><p>Orange, pomme, ananas, carotte.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Jus de fruits</h3><span class="dish__price">4&nbsp;000</span></div><p>Mangue, pomme, passion, gingembre, bissap.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Nectars &amp; jus de dégustation « Patrick Font »</h3><span class="dish__price">8&nbsp;000</span></div><p>Nectar d'abricot, pur jus de pomme, pur jus de pomme Redlove.</p></div>
+
+      <p class="menu__note">Eaux — 75 cl</p>
+      <div class="dish"><div class="dish__head"><h3>Kirène / Kirène pétillante</h3><span class="dish__price">3&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Acqua Panna</h3><span class="dish__price">5&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>San Pellegrino</h3><span class="dish__price">5&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Evian</h3><span class="dish__price">6&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Vals</h3><span class="dish__price">6&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Châteldon</h3><span class="dish__price">7&nbsp;000</span></div></div>
+
+      <p class="menu__note">Bières</p>
+      <div class="dish"><div class="dish__head"><h3>Pression Beaufort ou Osiris</h3><span class="dish__price">3&nbsp;500</span></div><p>25 cl : 3 500 F · 50 cl : 5 000 F.</p></div>
+      <div class="dish"><div class="dish__head"><h3>Castel</h3><span class="dish__price">3&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Heineken</h3><span class="dish__price">3&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Budweiser</h3><span class="dish__price">4&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Desperados</h3><span class="dish__price">4&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Guinness</h3><span class="dish__price">4&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Corona</h3><span class="dish__price">5&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>La Chouffe</h3><span class="dish__price">5&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Leffe</h3><span class="dish__price">5&nbsp;000</span></div></div>
+
+      <p class="menu__note">Boissons chaudes</p>
+      <div class="dish"><div class="dish__head"><h3>Café Continent — espresso, décaféiné ou allongé</h3><span class="dish__price">3&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Thés &amp; infusions</h3><span class="dish__price">3&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Menthe fraîche / Citronnelle fraîche</h3><span class="dish__price">3&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Chocolat chaud maison</h3><span class="dish__price">4&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Cappuccino</h3><span class="dish__price">4&nbsp;000</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Latte</h3><span class="dish__price">3&nbsp;500</span></div></div>
+      <div class="dish"><div class="dish__head"><h3>Chocolat viennois</h3><span class="dish__price">4&nbsp;500</span></div></div>
+      <p class="menu__note">Notre cave : champagnes Billecart-Salmon, grands crus, whiskies, cognacs &amp; armagnacs — carte complète au restaurant.</p>
     </div>
 
   </div>

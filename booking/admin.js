@@ -28,7 +28,10 @@
   var logoutBtn = document.getElementById('logoutBtn');
 
   function showDash() { loginView.hidden = true; dashView.hidden = false; logoutBtn.hidden = false; initDash(); }
-  function showLogin() { loginView.hidden = false; dashView.hidden = true; logoutBtn.hidden = true; }
+  function showLogin() {
+    loginView.hidden = false; dashView.hidden = true; logoutBtn.hidden = true;
+    var f = document.getElementById('addFab'); if (f) f.hidden = true;
+  }
   store.isAdmin().then(function (ok) { if (ok) showDash(); });
 
   document.getElementById('loginForm').addEventListener('submit', function (e) {
@@ -81,6 +84,52 @@
     // modal
     document.getElementById('rzClose').addEventListener('click', closeModal);
     document.getElementById('rzModal').addEventListener('click', function (e) { if (e.target === this) closeModal(); });
+
+    /* ---- Bouton + : réservation manuelle ---- */
+    var addModal = document.getElementById('addModal');
+    var addFab = document.getElementById('addFab');
+    addFab.hidden = false;
+    function openAdd() {
+      // pré-remplit avec le jour sélectionné (mois) ou le jour affiché
+      document.getElementById('aDate').value = (vView === 'month' && selDay) ? selDay : ymd(cursor);
+      document.getElementById('addMsg').textContent = '';
+      addModal.classList.add('open');
+      setTimeout(function () { document.getElementById('aName').focus(); }, 100);
+    }
+    function closeAdd() { addModal.classList.remove('open'); }
+    addFab.addEventListener('click', openAdd);
+    document.getElementById('addClose').addEventListener('click', closeAdd);
+    addModal.addEventListener('click', function (e) { if (e.target === this) closeAdd(); });
+
+    document.getElementById('addForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var m = document.getElementById('addMsg');
+      var p = {
+        date: document.getElementById('aDate').value,
+        time: document.getElementById('aTime').value,
+        name: document.getElementById('aName').value.trim(),
+        phone: document.getElementById('aPhone').value.trim(),
+        party: parseInt(document.getElementById('aParty').value, 10),
+        note: document.getElementById('aNote').value.trim()
+      };
+      if (!p.date || !p.time || !p.name || !p.phone || !p.party) {
+        m.className = 'bk-msg err'; m.textContent = 'Merci de remplir date, heure, nom, téléphone et personnes.'; return;
+      }
+      var btn = document.getElementById('addSubmit'); btn.disabled = true;
+      m.className = 'bk-msg'; m.textContent = 'Enregistrement…';
+      store.createBooking(p).then(function (r) {
+        btn.disabled = false;
+        if (!r.ok) { m.className = 'bk-msg err'; m.textContent = r.reason || 'Impossible d\'enregistrer.'; return; }
+        m.className = 'bk-msg ok'; m.textContent = 'Réservation ajoutée ✓';
+        document.getElementById('addForm').reset();
+        document.getElementById('aParty').value = 2;
+        document.getElementById('aTime').value = '20:00';
+        // se placer sur le jour concerné et rafraîchir
+        selDay = p.date; cursor = new Date(p.date + 'T00:00');
+        refresh();
+        setTimeout(closeAdd, 700);
+      });
+    });
 
     if (store.onChange) store.onChange(function () { refresh(); });
     refresh();

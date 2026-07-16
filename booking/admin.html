@@ -68,6 +68,34 @@
   <p class="cx-hint">‹ Glissez horizontalement (ou utilisez les flèches) pour changer de période ›</p>
 </main>
 
+<!-- Bouton + : ajouter une réservation manuellement -->
+<button class="add-fab" id="addFab" aria-label="Ajouter une réservation" hidden>+</button>
+
+<!-- Ajout manuel d'une réservation -->
+<div class="rz-modal" id="addModal">
+  <div class="rz-card">
+    <button class="rz-close" id="addClose" aria-label="Fermer">&times;</button>
+    <h3>Nouvelle réservation</h3>
+    <form class="bk-form" id="addForm" style="margin-top:1rem">
+      <div class="row">
+        <label>Date<input type="date" id="aDate" required></label>
+        <label>Heure<input type="time" id="aTime" value="20:00" step="900" required></label>
+      </div>
+      <div class="row">
+        <label>Nom<input type="text" id="aName" placeholder="Nom du client" required></label>
+        <label>Téléphone<input type="tel" id="aPhone" placeholder="07 ..." required></label>
+      </div>
+      <div class="row">
+        <label>Personnes<input type="number" id="aParty" min="1" value="2" required></label>
+        <label>Note <small style="text-transform:none;letter-spacing:0;color:var(--cream-dim)">(optionnel)</small>
+          <input type="text" id="aNote" placeholder="Table terrasse, anniversaire…"></label>
+      </div>
+      <button type="submit" class="btn btn--gold" id="addSubmit">Enregistrer la réservation</button>
+      <p class="bk-msg" id="addMsg"></p>
+    </form>
+  </div>
+</div>
+
 <!-- Détail réservation -->
 <div class="rz-modal" id="rzModal">
   <div class="rz-card">
