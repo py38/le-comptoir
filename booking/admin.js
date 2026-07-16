@@ -68,10 +68,6 @@
     document.getElementById('svDays').innerHTML = DAYS.map(function (d, i) {
       return '<label class="wd"><input type="checkbox" value="' + i + '" checked><span>' + d + '</span></label>';
     }).join('');
-    // Couverts différents selon le jour de la semaine (Lun ≠ Mar…)
-    document.getElementById('svCapsDay').innerHTML = DAYS.map(function (d, i) {
-      return '<label class="cd"><span>' + d + '</span><input type="number" min="0" data-cd="' + i + '" placeholder="—"></label>';
-    }).join('');
     function svcReset() {
       document.getElementById('svId').value = '';
       document.getElementById('svName').value = '';
@@ -81,18 +77,15 @@
       document.getElementById('svMsg').textContent = '';
       document.getElementById('svSave').textContent = 'Enregistrer le service';
       svcModal.querySelectorAll('#svDays input').forEach(function (c) { c.checked = true; });
-      svcModal.querySelectorAll('#svCapsDay input').forEach(function (c) { c.value = ''; });
     }
     function renderSvcList() {
       store.getServices().then(function (list) {
         var el = document.getElementById('svcAdminList');
         el.innerHTML = list.length ? list.map(function (s) {
-          var cbd = s.caps_by_day || {};
-          var perDay = Object.keys(cbd).map(function (k) { return DAYS[+k] + ' ' + cbd[k]; }).join(' · ');
           return '<div class="svc-row' + (s.active === false ? ' off' : '') + '">' +
-            '<div><b>' + esc(s.name) + '</b><span>' + s.start_time + ' – ' + s.end_time + ' · ' + s.capacity + ' couverts' + (perDay ? ' (défaut)' : '') + '</span>' +
+            '<div><b>' + esc(s.name) + '</b><span>' + s.start_time + ' – ' + s.end_time + ' · ' + s.capacity + ' couverts</span>' +
             '<i>' + (s.weekdays || []).map(function (i) { return DAYS[i]; }).join(' ') + '</i>' +
-            (perDay ? '<i style="color:var(--gold-soft)">Couverts : ' + perDay + '</i>' : '') + '</div>' +
+            '</div>' +
             '<div><button class="mini" data-edit="' + s.id + '">Modifier</button>' +
             '<button class="mini danger" data-del="' + s.id + '">Supprimer</button></div></div>';
         }).join('') : '<p class="dl-empty">Aucun service. Créez-en un ci-dessous.</p>';
@@ -106,11 +99,6 @@
             document.getElementById('svEnd').value = s.end_time;
             document.getElementById('svSave').textContent = 'Mettre à jour';
             svcModal.querySelectorAll('#svDays input').forEach(function (c) { c.checked = (s.weekdays || []).indexOf(+c.value) > -1; });
-            var cbd = s.caps_by_day || {};
-            svcModal.querySelectorAll('#svCapsDay input').forEach(function (c) {
-              var v = cbd[c.getAttribute('data-cd')];
-              c.value = (v === undefined || v === null) ? '' : v;
-            });
           };
         });
         el.querySelectorAll('[data-del]').forEach(function (b) {
@@ -130,18 +118,13 @@
       var m = document.getElementById('svMsg');
       var wd = [].filter.call(svcModal.querySelectorAll('#svDays input'), function (c) { return c.checked; }).map(function (c) { return +c.value; });
       if (!wd.length) { m.className = 'bk-msg err'; m.textContent = 'Choisissez au moins un jour.'; return; }
-      var caps = {};
-      svcModal.querySelectorAll('#svCapsDay input').forEach(function (c) {
-        var v = c.value.trim();
-        if (v !== '') { var n = parseInt(v, 10); if (!isNaN(n) && n >= 0) caps[c.getAttribute('data-cd')] = n; }
-      });
       var s = {
         id: document.getElementById('svId').value || null,
         name: document.getElementById('svName').value.trim(),
         start_time: document.getElementById('svStart').value,
         end_time: document.getElementById('svEnd').value,
         capacity: parseInt(document.getElementById('svCap').value, 10),
-        weekdays: wd, caps_by_day: caps, sort: 0, active: true
+        weekdays: wd, sort: 0, active: true
       };
       if (!s.name || isNaN(s.capacity)) { m.className = 'bk-msg err'; m.textContent = 'Nom et couverts requis.'; return; }
       m.className = 'bk-msg'; m.textContent = 'Enregistrement…';
