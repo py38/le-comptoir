@@ -536,8 +536,8 @@
       </div>
       <p class="appsec__hint" id="installedHint" hidden>✓ Application déjà installée — retrouvez-la sur votre écran d'accueil.</p>
     </div>
-    <div class="appsec__phone" data-reveal data-delay="2" aria-hidden="true">
-      <div class="phone">
+    <div class="appsec__phone" data-reveal data-delay="2">
+      <div class="phone" aria-hidden="true">
         <div class="phone__notch"></div>
         <div class="phone__screen">
           <img src="assets/img/bar.jpg" alt="">
@@ -548,6 +548,15 @@
           </div>
         </div>
       </div>
+
+      <!-- QR : visible sur ordinateur (inutile sur mobile, on y est déjà) -->
+      <figure class="qr-card" id="qrCard">
+        <img src="assets/qr/qr-site.svg" alt="QR code pour ouvrir Le Comptoir sur votre téléphone" width="150" height="150">
+        <figcaption>
+          <strong>Scannez pour installer</strong>
+          Ouvrez l'appareil photo de votre téléphone et visez le code.
+        </figcaption>
+      </figure>
     </div>
   </div>
 </section>
