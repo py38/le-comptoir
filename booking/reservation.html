@@ -49,8 +49,18 @@
     <section class="bk-card" id="rightPanel">
       <div id="formView">
         <div class="slot-date" id="slotDate">Sélectionnez une date</div>
-        <p class="bk-remaining" id="remaining" hidden></p>
         <p class="bk-empty" id="closedMsg" hidden>Le restaurant est fermé ce jour-là.</p>
+
+        <div id="svcWrap" hidden>
+          <p class="svc-label">Choisissez votre service</p>
+          <div class="slots" id="svcList"></div>
+        </div>
+
+        <div class="bk-full" id="fullMsg" hidden>
+          <strong>Complet — plus de place à ce service.</strong>
+          <p>Essayez un autre service ou une autre date. Pour tenter votre chance, appelez-nous directement :</p>
+          <a class="btn btn--gold" href="tel:+2250798974607">Appeler le 07 98 97 46 07</a>
+        </div>
 
         <form class="bk-form" id="bkForm" hidden>
           <div class="row">

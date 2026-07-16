@@ -50,16 +50,13 @@
     </div>
     <h2 class="cx-title" id="cxTitle">—</h2>
     <div class="cx-stats">
-      <div class="cx-stat"><b id="statResa">0</b><span>Réservations à venir</span></div>
+      <div class="cx-stat clickable" id="statResaBox" title="Voir la liste"><b id="statResa">0</b><span>Réservations à venir ›</span></div>
       <div class="cx-stat"><b id="statCouverts">0</b><span>Couverts aujourd'hui</span></div>
     </div>
   </div>
 
   <div class="cap-bar">
-    <label>Couverts / jour (défaut)
-      <input type="number" id="defCap" min="0" style="width:80px">
-    </label>
-    <button class="mini" id="saveDefCap">Enregistrer</button>
+    <button class="mini" id="svcBtn">⚙︎ Services &amp; couverts</button>
     <span class="sp"></span>
     <span id="dayCapInfo"></span>
   </div>
@@ -79,17 +76,18 @@
     <form class="bk-form" id="addForm" style="margin-top:1rem">
       <div class="row">
         <label>Date<input type="date" id="aDate" required></label>
+        <label>Service<select id="aSvc" required></select></label>
+      </div>
+      <div class="row">
         <label>Heure<input type="time" id="aTime" value="20:00" step="900" required></label>
+        <label>Personnes<input type="number" id="aParty" min="1" value="2" required></label>
       </div>
       <div class="row">
         <label>Nom<input type="text" id="aName" placeholder="Nom du client" required></label>
         <label>Téléphone<input type="tel" id="aPhone" placeholder="07 ..." required></label>
       </div>
-      <div class="row">
-        <label>Personnes<input type="number" id="aParty" min="1" value="2" required></label>
-        <label>Note <small style="text-transform:none;letter-spacing:0;color:var(--cream-dim)">(optionnel)</small>
-          <input type="text" id="aNote" placeholder="Table terrasse, anniversaire…"></label>
-      </div>
+      <label>Note <small style="text-transform:none;letter-spacing:0;color:var(--cream-dim)">(optionnel)</small>
+        <input type="text" id="aNote" placeholder="Table terrasse, anniversaire…"></label>
       <button type="submit" class="btn btn--gold" id="addSubmit">Enregistrer la réservation</button>
       <p class="bk-msg" id="addMsg"></p>
     </form>
@@ -102,7 +100,46 @@
     <button class="rz-close" id="rzClose" aria-label="Fermer">&times;</button>
     <h3 id="rzTitle">Réservation</h3>
     <div id="rzBody"></div>
-    <button class="btn btn--ghost" id="rzCancel" style="margin-top:1.2rem;width:100%">Annuler la réservation</button>
+    <button class="btn btn--gold" id="rzDone" style="margin-top:1.2rem;width:100%">✓ Terminée — libérer les couverts</button>
+    <button class="btn btn--ghost" id="rzCancel" style="margin-top:.6rem;width:100%">Annuler la réservation</button>
+  </div>
+</div>
+
+<!-- Liste des réservations à venir -->
+<div class="rz-modal" id="upModal">
+  <div class="rz-card rz-card--wide">
+    <button class="rz-close" id="upClose" aria-label="Fermer">&times;</button>
+    <h3>Réservations à venir</h3>
+    <div id="upBody" class="up-list"></div>
+  </div>
+</div>
+
+<!-- Gestion des services -->
+<div class="rz-modal" id="svcModal">
+  <div class="rz-card rz-card--wide">
+    <button class="rz-close" id="svcClose" aria-label="Fermer">&times;</button>
+    <h3>Services &amp; couverts</h3>
+    <p class="svc-help">Chaque service a ses horaires et sa capacité en couverts. Le midi et le soir sont comptés séparément — un service complet ne bloque pas les autres.</p>
+    <div id="svcAdminList"></div>
+    <form class="bk-form" id="svcForm" style="margin-top:1.2rem">
+      <input type="hidden" id="svId">
+      <div class="row">
+        <label>Nom<input type="text" id="svName" placeholder="Dîner — 1er service" required></label>
+        <label>Couverts<input type="number" id="svCap" min="0" value="60" required></label>
+      </div>
+      <div class="row">
+        <label>Début<input type="time" id="svStart" value="19:00" required></label>
+        <label>Fin<input type="time" id="svEnd" value="23:00" required></label>
+      </div>
+      <label>Jours d'ouverture
+        <div class="wd-picker" id="svDays"></div>
+      </label>
+      <div class="row">
+        <button type="submit" class="btn btn--gold" id="svSave">Enregistrer le service</button>
+        <button type="button" class="btn btn--ghost" id="svReset">Nouveau</button>
+      </div>
+      <p class="bk-msg" id="svMsg"></p>
+    </form>
   </div>
 </div>
 

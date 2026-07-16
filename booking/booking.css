@@ -320,3 +320,51 @@
 }
 .add-fab:hover{transform:translateY(-3px) rotate(90deg)}
 @media(max-width:560px){.add-fab{right:1rem;bottom:1rem;width:52px;height:52px;font-size:1.7rem}}
+
+/* ---- Choix du service (client) ---- */
+.svc-label{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
+.slot b{display:block;font-family:var(--serif);font-size:1.05rem;line-height:1.2}
+.slot.sel b{color:var(--navy)}
+
+/* ---- Message complet ---- */
+.bk-full{border:1px solid var(--gold);background:rgba(200,164,77,.08);padding:1.4rem;margin-top:.6rem;text-align:center}
+.bk-full strong{display:block;font-family:var(--serif);font-size:1.3rem;color:var(--gold-soft);margin-bottom:.5rem}
+.bk-full p{color:var(--cream-dim);font-size:.9rem;margin-bottom:1rem;line-height:1.5}
+.bk-full .btn{width:100%}
+
+/* ============================================================
+   Services & couverts (admin)
+   ============================================================ */
+.cx-stat.clickable{cursor:pointer;transition:.25s}
+.cx-stat.clickable:hover{border-color:var(--gold);background:rgba(200,164,77,.08)}
+
+.svc-chip{display:inline-flex;align-items:center;gap:.45rem;border:1px solid var(--line);padding:.35rem .55rem;margin:.2rem .35rem .2rem 0;border-radius:4px}
+.svc-chip.off{opacity:.55}
+.svc-chip b{font-family:var(--serif);font-size:.98rem;color:var(--cream)}
+.svc-chip i{font-style:normal;font-size:.62rem;color:var(--cream-dim)}
+.svc-chip em{font-style:normal;font-size:.66rem;color:var(--gold-soft)}
+.svc-chip input{width:58px;background:rgba(8,18,24,.6);border:1px solid var(--line);color:var(--cream);padding:.25rem .3rem;font-family:var(--sans)}
+.svc-chip .mini{margin:0}
+
+.rz-card--wide{max-width:560px;width:100%}
+.svc-help{color:var(--cream-dim);font-size:.85rem;line-height:1.5;margin-bottom:1rem}
+.svc-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem 0;border-bottom:1px dotted rgba(200,164,77,.18)}
+.svc-row.off{opacity:.5}
+.svc-row b{display:block;font-family:var(--serif);font-size:1.1rem;color:var(--cream)}
+.svc-row span{display:block;font-size:.78rem;color:var(--gold-soft)}
+.svc-row i{font-style:normal;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--cream-dim)}
+.svc-row .mini{margin:0 0 0 .3rem}
+
+.wd-picker{display:flex;gap:.3rem;flex-wrap:wrap}
+.wd{position:relative;cursor:pointer}
+.wd input{position:absolute;opacity:0;pointer-events:none}
+.wd span{display:block;padding:.42rem .55rem;border:1px solid var(--line);font-size:.66rem;letter-spacing:.06em;color:var(--cream-dim);transition:.2s}
+.wd input:checked + span{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+
+.up-list{max-height:60vh;overflow-y:auto}
+.up-list h5{font-family:var(--serif);font-size:1.15rem;color:var(--gold-soft);margin:1rem 0 .3rem;text-transform:capitalize}
+.up-list h5:first-child{margin-top:0}
+
+/* réservation terminée : couverts libérés */
+.tlx-block.done{opacity:.45;border-left-color:var(--cream-dim)}
+.dl-item.done{opacity:.5}

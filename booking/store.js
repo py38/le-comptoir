@@ -1,113 +1,103 @@
 /* =========================================================
-   Le Comptoir — Données réservation (modèle par JOUR)
-     • capacité en couverts / jour (défaut + surcharges)
-     • horaires d'ouverture → créneaux horaires
-     • temps réel (Supabase Realtime / évènement storage)
+   Le Comptoir — Données réservation (modèle par SERVICE)
+     • chaque service (Déjeuner, Dîner, 1er/2e service…) a
+       ses horaires + sa capacité en couverts
+     • surcharges par date (capacité spéciale / fermeture)
+     • statut réservation : 'confirmed' (occupe) | 'done' (libéré)
    ========================================================= */
 (function () {
   'use strict';
   var cfg = window.COMPTOIR_CONFIG || {};
   var useSupabase = !!(cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY);
 
-  /* ---------- helpers date / heure ---------- */
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
   function today() { return ymd(new Date()); }
   function uid() { return 'id' + Math.random().toString(36).slice(2) + Date.now().toString(36); }
-  function toMin(t) { var p = t.split(':'); return (+p[0]) * 60 + (+p[1]); }
+  function toMin(t) { var p = String(t).split(':'); return (+p[0]) * 60 + (+p[1] || 0); }
   function toHM(m) { return pad(Math.floor(m / 60) % 24) + ':' + pad(m % 60); }
-  function weekday(dateStr) { return new Date(dateStr + 'T00:00').getDay(); }
+  function dow(dateStr) { return new Date(dateStr + 'T00:00').getDay(); }
 
-  var HOURS = cfg.OPENING_HOURS || {};
-  function openingFor(dateStr) { return HOURS[weekday(dateStr)] || { open: '12:00', close: '23:00', closed: true }; }
-  function weekdayClosed(dateStr) { return !!openingFor(dateStr).closed; }
-  function genTimes(dateStr) {
-    var o = openingFor(dateStr);
-    if (o.closed) return [];
+  /* Créneaux horaires proposés à l'intérieur d'un service */
+  function genTimes(svc) {
     var step = cfg.SLOT_STEP_MIN || 30;
-    var last = toMin(o.close) - (cfg.LAST_BOOKING_BEFORE_CLOSE_MIN || 60);
+    var last = toMin(svc.end_time) - (cfg.LAST_BOOKING_BEFORE_SERVICE_END_MIN || 30);
     var out = [];
-    for (var m = toMin(o.open); m <= last; m += step) out.push(toHM(m));
+    for (var m = toMin(svc.start_time); m <= last; m += step) out.push(toHM(m));
     return out;
   }
-  window.ComptoirHours = { openingFor: openingFor, genTimes: genTimes, weekdayClosed: weekdayClosed };
-
-  var DEFAULT_CAP = cfg.DEFAULT_COVERS_PER_DAY || 60;
+  window.ComptoirHours = { genTimes: genTimes };
 
   /* =======================================================
      MODE DÉMO (localStorage)
      ======================================================= */
-  var LS_BOOK = 'comptoir_bookings_v2';
-  var LS_DAYS = 'comptoir_daysettings_v2';
-  var LS_SET = 'comptoir_settings_v2';
+  var LS_BOOK = 'comptoir_bookings_v3';
+  var LS_SVC = 'comptoir_services_v3';
+  var LS_OVR = 'comptoir_overrides_v3';
   var LS_ADMIN = 'comptoir_admin_v1';
   function lsGet(k, d) { try { var v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
   function lsSet(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
 
   function seedDemo() {
-    if (localStorage.getItem(LS_BOOK) !== null) return;
-    var books = [];
-    var base = new Date();
-    function addDays(n) { var d = new Date(base); d.setDate(base.getDate() + n); return ymd(d); }
-    var demo = [
-      { d: 1, t: '20:00', p: 4, n: 'Awa Koné' }, { d: 1, t: '20:30', p: 2, n: 'Yann Diomandé' },
-      { d: 2, t: '13:00', p: 6, n: 'Groupe Bamba' }, { d: 2, t: '21:00', p: 2, n: 'Sarah T.' },
-      { d: 3, t: '19:30', p: 8, n: 'Anniversaire Kouassi' }, { d: 5, t: '20:00', p: 3, n: 'M. Traoré' },
-      { d: 6, t: '12:30', p: 2, n: 'Adjoua' }, { d: 6, t: '21:30', p: 5, n: 'Team Orange' }
-    ];
-    demo.forEach(function (x) {
-      books.push({ id: uid(), date: addDays(x.d), time: x.t, party_size: x.p, name: x.n,
-        phone: '07 00 00 00 00', note: '', status: 'confirmed', created_at: new Date().toISOString() });
-    });
-    lsSet(LS_BOOK, books);
-    lsSet(LS_DAYS, {});
-    lsSet(LS_SET, { defaultCapacity: DEFAULT_CAP });
+    if (localStorage.getItem(LS_SVC) === null) {
+      lsSet(LS_SVC, [
+        { id: uid(), name: 'Déjeuner', start_time: '12:00', end_time: '15:00', capacity: 60, weekdays: [0, 1, 2, 3, 4, 5, 6], sort: 1, active: true },
+        { id: uid(), name: 'Dîner', start_time: '19:00', end_time: '23:00', capacity: 60, weekdays: [0, 1, 2, 3, 4, 5, 6], sort: 2, active: true }
+      ]);
+    }
+    if (localStorage.getItem(LS_BOOK) === null) lsSet(LS_BOOK, []);
+    if (localStorage.getItem(LS_OVR) === null) lsSet(LS_OVR, {});
   }
 
-  function localBooked(dateStr) {
-    return lsGet(LS_BOOK, []).filter(function (b) { return b.date === dateStr; })
-      .reduce(function (s, b) { return s + b.party_size; }, 0);
-  }
-  function localCapacity(dateStr) {
-    var days = lsGet(LS_DAYS, {}); var s = lsGet(LS_SET, {});
-    var def = (s && s.defaultCapacity) || DEFAULT_CAP;
-    if (days[dateStr] && typeof days[dateStr].capacity === 'number') return days[dateStr].capacity;
-    return def;
-  }
-  function localClosed(dateStr) {
-    var days = lsGet(LS_DAYS, {});
-    if (days[dateStr] && typeof days[dateStr].closed === 'boolean') return days[dateStr].closed;
-    return weekdayClosed(dateStr);
-  }
-  function localDayInfo(dateStr) {
-    var closed = localClosed(dateStr);
-    var cap = localCapacity(dateStr);
-    var booked = localBooked(dateStr);
-    return { date: dateStr, capacity: cap, booked: booked, remaining: closed ? 0 : Math.max(0, cap - booked),
-      closed: closed, isOpenDay: !weekdayClosed(dateStr) };
+  function ovrKey(d, s) { return d + '|' + s; }
+  function localDayServices(dateStr) {
+    var svcs = lsGet(LS_SVC, []).filter(function (s) { return s.active && s.weekdays.indexOf(dow(dateStr)) > -1; });
+    var ovr = lsGet(LS_OVR, {});
+    var books = lsGet(LS_BOOK, []);
+    return svcs.sort(function (a, b) { return (a.sort - b.sort) || (a.start_time < b.start_time ? -1 : 1); }).map(function (s) {
+      var o = ovr[ovrKey(dateStr, s.id)] || {};
+      var cap = (typeof o.capacity === 'number') ? o.capacity : s.capacity;
+      var closed = !!o.closed;
+      var booked = books.filter(function (b) { return b.date === dateStr && b.service_id === s.id && b.status === 'confirmed'; })
+        .reduce(function (n, b) { return n + b.party_size; }, 0);
+      return { service_id: s.id, name: s.name, start_time: s.start_time, end_time: s.end_time,
+        capacity: cap, closed: closed, booked: booked, remaining: Math.max(0, cap - booked) };
+    });
   }
 
   var localStore = {
     mode: 'demo',
-    getDefaultCapacity: function () { return Promise.resolve((lsGet(LS_SET, {}).defaultCapacity) || DEFAULT_CAP); },
-    setDefaultCapacity: function (n) { var s = lsGet(LS_SET, {}); s.defaultCapacity = n; lsSet(LS_SET, s); notify(); return Promise.resolve({ ok: true }); },
-    getDayInfo: function (dateStr) { return Promise.resolve(localDayInfo(dateStr)); },
-    getRangeInfo: function (a, b) {
-      var out = {}; var d = new Date(a + 'T00:00'), end = new Date(b + 'T00:00');
-      for (; d <= end; d.setDate(d.getDate() + 1)) { var ds = ymd(d); out[ds] = localDayInfo(ds); }
+    getServices: function () { return Promise.resolve(lsGet(LS_SVC, []).slice().sort(function (a, b) { return a.sort - b.sort; })); },
+    saveService: function (s) {
+      var list = lsGet(LS_SVC, []);
+      if (s.id) { list = list.map(function (x) { return x.id === s.id ? Object.assign(x, s) : x; }); }
+      else { s.id = uid(); list.push(s); }
+      lsSet(LS_SVC, list); notify(); return Promise.resolve({ ok: true });
+    },
+    deleteService: function (id) { lsSet(LS_SVC, lsGet(LS_SVC, []).filter(function (s) { return s.id !== id; })); notify(); return Promise.resolve({ ok: true }); },
+    getDayServices: function (dateStr) { return Promise.resolve(localDayServices(dateStr)); },
+    getDaysAvailability: function (a, b) {
+      var out = {}, d = new Date(a + 'T00:00'), end = new Date(b + 'T00:00');
+      for (; d <= end; d.setDate(d.getDate() + 1)) {
+        var ds = ymd(d), svcs = localDayServices(ds);
+        out[ds] = { remaining: svcs.reduce(function (n, s) { return n + (s.closed ? 0 : s.remaining); }, 0),
+                    closed: svcs.length === 0 || svcs.every(function (s) { return s.closed; }) };
+      }
       return Promise.resolve(out);
     },
-    getBookingsRange: function (a, b) {
-      return Promise.resolve(lsGet(LS_BOOK, []).filter(function (x) { return x.date >= a && x.date <= b; })
-        .sort(function (m, n) { return (m.date + m.time) < (n.date + n.time) ? -1 : 1; }));
+    setOverride: function (dateStr, serviceId, patch) {
+      var ovr = lsGet(LS_OVR, {}); var k = ovrKey(dateStr, serviceId);
+      ovr[k] = Object.assign(ovr[k] || {}, patch); lsSet(LS_OVR, ovr); notify(); return Promise.resolve({ ok: true });
     },
     createBooking: function (p) {
-      var info = localDayInfo(p.date);
-      if (info.closed) return Promise.resolve({ ok: false, reason: 'Le restaurant est fermé ce jour-là.' });
-      if (p.party > info.remaining) return Promise.resolve({ ok: false, reason: 'Il ne reste que ' + info.remaining + ' couvert(s) pour cette date.' });
+      var svcs = localDayServices(p.date);
+      var s = svcs.filter(function (x) { return x.service_id === p.serviceId; })[0];
+      if (!s) return Promise.resolve({ ok: false, reason: 'Service indisponible ce jour-là.' });
+      if (s.closed) return Promise.resolve({ ok: false, reason: 'Service fermé ce jour-là.' });
+      if (p.party > s.remaining) return Promise.resolve({ ok: false, reason: 'full', remaining: s.remaining });
       var books = lsGet(LS_BOOK, []);
-      var b = { id: uid(), date: p.date, time: p.time, party_size: p.party, name: p.name, phone: p.phone,
-        note: p.note || '', status: 'confirmed', created_at: new Date().toISOString() };
+      var b = { id: uid(), date: p.date, service_id: p.serviceId, time: p.time, party_size: p.party,
+        name: p.name, phone: p.phone, note: p.note || '', status: 'confirmed', created_at: new Date().toISOString() };
       books.push(b); lsSet(LS_BOOK, books); notify();
       return Promise.resolve({ ok: true, booking: b });
     },
@@ -118,18 +108,25 @@
     },
     signOut: function () { sessionStorage.removeItem(LS_ADMIN); return Promise.resolve(); },
     isAdmin: function () { return Promise.resolve(sessionStorage.getItem(LS_ADMIN) === '1'); },
-    setDayCapacity: function (dateStr, cap) { var days = lsGet(LS_DAYS, {}); days[dateStr] = days[dateStr] || {}; days[dateStr].capacity = cap; lsSet(LS_DAYS, days); notify(); return Promise.resolve({ ok: true }); },
-    setDayClosed: function (dateStr, closed) { var days = lsGet(LS_DAYS, {}); days[dateStr] = days[dateStr] || {}; days[dateStr].closed = closed; lsSet(LS_DAYS, days); notify(); return Promise.resolve({ ok: true }); },
-    bookings: function () {
-      return Promise.resolve(lsGet(LS_BOOK, []).slice().sort(function (a, b) { return (a.date + a.time) < (b.date + b.time) ? -1 : 1; }));
+    getBookingsRange: function (a, b) {
+      return Promise.resolve(lsGet(LS_BOOK, []).filter(function (x) { return x.date >= a && x.date <= b; })
+        .sort(function (m, n) { return (m.date + m.time) < (n.date + n.time) ? -1 : 1; }));
+    },
+    upcoming: function () {
+      var t = today();
+      return Promise.resolve(lsGet(LS_BOOK, []).filter(function (b) { return b.date >= t && b.status === 'confirmed'; })
+        .sort(function (m, n) { return (m.date + m.time) < (n.date + n.time) ? -1 : 1; }));
+    },
+    setBookingStatus: function (id, status) {
+      var books = lsGet(LS_BOOK, []); books.forEach(function (b) { if (b.id === id) b.status = status; });
+      lsSet(LS_BOOK, books); notify(); return Promise.resolve({ ok: true });
     },
     cancelBooking: function (id) { lsSet(LS_BOOK, lsGet(LS_BOOK, []).filter(function (b) { return b.id !== id; })); notify(); return Promise.resolve({ ok: true }); }
   };
 
-  /* évènement temps réel (démo : autres onglets via 'storage', + notif locale) */
   var listeners = [];
   function notify() { listeners.forEach(function (cb) { try { cb(); } catch (e) {} }); }
-  window.addEventListener('storage', function (e) { if (e.key === LS_BOOK || e.key === LS_DAYS || e.key === LS_SET) notify(); });
+  window.addEventListener('storage', function (e) { if (e.key === LS_BOOK || e.key === LS_SVC || e.key === LS_OVR) notify(); });
   localStore.onChange = function (cb) { listeners.push(cb); };
 
   /* =======================================================
@@ -138,66 +135,77 @@
   function makeSupabaseStore() {
     var sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
     var cbs = [];
-    var defCap = DEFAULT_CAP; // capacité par défaut du resto (chargée depuis settings)
-    function loadDef() { return sb.from('settings').select('value').eq('key', 'default_capacity').maybeSingle().then(function (r) { if (r.data) defCap = parseInt(r.data.value, 10) || DEFAULT_CAP; return defCap; }); }
-    loadDef();
-    sb.channel('rt-comptoir')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, function () { cbs.forEach(function (f) { f(); }); })
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'day_settings' }, function () { cbs.forEach(function (f) { f(); }); })
+    sb.channel('comptoir')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'bookings' }, function () { cbs.forEach(function (c) { c(); }); })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'services' }, function () { cbs.forEach(function (c) { c(); }); })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'service_overrides' }, function () { cbs.forEach(function (c) { c(); }); })
       .subscribe();
 
-    function dayInfoFrom(row, dateStr) {
-      var closed = row && typeof row.closed === 'boolean' ? row.closed : weekdayClosed(dateStr);
-      var cap = row && typeof row.capacity === 'number' ? row.capacity : defCap;
-      var booked = row && typeof row.booked === 'number' ? row.booked : 0;
-      return { date: dateStr, capacity: cap, booked: booked, remaining: closed ? 0 : Math.max(0, cap - booked), closed: closed, isOpenDay: !weekdayClosed(dateStr) };
-    }
     return {
       mode: 'live',
       onChange: function (cb) { cbs.push(cb); },
-      getDefaultCapacity: function () { return loadDef(); },
-      setDefaultCapacity: function (n) {
-        return sb.from('settings').upsert({ key: 'default_capacity', value: String(n) })
-          .then(function (r) { if (!r.error) defCap = n; return r.error ? { ok: false, reason: r.error.message } : { ok: true }; });
+      getServices: function () {
+        return sb.from('services').select('*').order('sort').then(function (r) { return r.data || []; });
       },
-      getDayInfo: function (dateStr) {
-        return sb.from('day_availability').select('*').eq('date', dateStr).maybeSingle()
-          .then(function (r) { return dayInfoFrom(r.data, dateStr); });
+      saveService: function (s) {
+        var row = { name: s.name, start_time: s.start_time, end_time: s.end_time, capacity: s.capacity,
+                    weekdays: s.weekdays, sort: s.sort, active: s.active !== false };
+        var q = s.id ? sb.from('services').update(row).eq('id', s.id) : sb.from('services').insert(row);
+        return q.then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; });
       },
-      getRangeInfo: function (a, b) {
-        return sb.from('day_availability').select('*').gte('date', a).lte('date', b).then(function (r) {
-          var map = {}; (r.data || []).forEach(function (row) { map[row.date] = dayInfoFrom(row, row.date); });
-          var d = new Date(a + 'T00:00'), end = new Date(b + 'T00:00');
-          for (; d <= end; d.setDate(d.getDate() + 1)) { var ds = ymd(d); if (!map[ds]) map[ds] = dayInfoFrom(null, ds); }
-          return map;
+      deleteService: function (id) {
+        return sb.from('services').delete().eq('id', id)
+          .then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; });
+      },
+      getDayServices: function (dateStr) {
+        return sb.rpc('day_services', { p_date: dateStr }).then(function (r) { return r.data || []; });
+      },
+      getDaysAvailability: function (a, b) {
+        return sb.rpc('days_availability', { p_from: a, p_to: b }).then(function (r) {
+          var out = {}; (r.data || []).forEach(function (x) { out[x.date] = { remaining: x.remaining, closed: x.closed }; });
+          return out;
         });
       },
+      setOverride: function (dateStr, serviceId, patch) {
+        var row = Object.assign({ date: dateStr, service_id: serviceId }, patch);
+        return sb.from('service_overrides').upsert(row, { onConflict: 'date,service_id' })
+          .then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; });
+      },
+      createBooking: function (p) {
+        return sb.rpc('create_booking', {
+          p_date: p.date, p_service: p.serviceId, p_time: p.time, p_party: p.party,
+          p_name: p.name, p_phone: p.phone, p_note: p.note || ''
+        }).then(function (r) {
+          if (r.error) return { ok: false, reason: r.error.message };
+          return r.data && r.data.ok ? { ok: true, booking: r.data } : { ok: false, reason: (r.data && r.data.reason) || 'refus', remaining: r.data && r.data.remaining };
+        });
+      },
+      signIn: function (email, pw) {
+        return sb.auth.signInWithPassword({ email: email, password: pw })
+          .then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; });
+      },
+      signOut: function () { return sb.auth.signOut(); },
+      isAdmin: function () { return sb.auth.getUser().then(function (r) { return !!(r.data && r.data.user); }); },
       getBookingsRange: function (a, b) {
         return sb.from('bookings').select('*').gte('date', a).lte('date', b).order('date').order('time')
           .then(function (r) { return r.data || []; });
       },
-      createBooking: function (p) {
-        return sb.rpc('create_booking', { p_date: p.date, p_time: p.time, p_party: p.party, p_name: p.name, p_phone: p.phone, p_note: p.note || '' })
-          .then(function (r) {
-            if (r.error) return { ok: false, reason: r.error.message };
-            return r.data && r.data.ok ? { ok: true, booking: r.data } : { ok: false, reason: (r.data && r.data.reason) || 'Réservation refusée' };
-          });
+      upcoming: function () {
+        return sb.from('bookings').select('*').gte('date', today()).eq('status', 'confirmed')
+          .order('date').order('time').then(function (r) { return r.data || []; });
       },
-      signIn: function (email, pw) { return sb.auth.signInWithPassword({ email: email, password: pw }).then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; }); },
-      signOut: function () { return sb.auth.signOut(); },
-      isAdmin: function () { return sb.auth.getUser().then(function (r) { return !!(r.data && r.data.user); }); },
-      setDayCapacity: function (dateStr, cap) { return sb.from('day_settings').upsert({ date: dateStr, capacity: cap }).then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; }); },
-      setDayClosed: function (dateStr, closed) { return sb.from('day_settings').upsert({ date: dateStr, closed: closed }).then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; }); },
-      bookings: function () { return sb.from('bookings').select('*').order('date').order('time').then(function (r) { return r.data || []; }); },
-      cancelBooking: function (id) { return sb.from('bookings').delete().eq('id', id).then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; }); }
+      setBookingStatus: function (id, status) {
+        return sb.from('bookings').update({ status: status }).eq('id', id)
+          .then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; });
+      },
+      cancelBooking: function (id) {
+        return sb.from('bookings').delete().eq('id', id)
+          .then(function (r) { return r.error ? { ok: false, reason: r.error.message } : { ok: true }; });
+      }
     };
   }
 
-  if (useSupabase) {
-    window.ComptoirStore = makeSupabaseStore();
-  } else {
-    seedDemo();
-    window.ComptoirStore = localStore;
-  }
+  if (useSupabase) { window.ComptoirStore = makeSupabaseStore(); }
+  else { seedDemo(); window.ComptoirStore = localStore; }
   window.ComptoirStore.isDemo = !useSupabase;
 })();

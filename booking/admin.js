@@ -62,11 +62,76 @@
     document.getElementById('cxNext').addEventListener('click', function () { step(1); });
     document.getElementById('cxToday').addEventListener('click', function () { cursor = new Date(); cursor.setHours(0, 0, 0, 0); refresh(); });
 
-    store.getDefaultCapacity().then(function (c) { document.getElementById('defCap').value = c; });
-    document.getElementById('saveDefCap').addEventListener('click', function () {
-      var n = parseInt(document.getElementById('defCap').value, 10);
-      if (isNaN(n) || n < 0) return;
-      store.setDefaultCapacity(n).then(refresh);
+    /* ---- Gestion des services ---- */
+    var svcModal = document.getElementById('svcModal');
+    var DAYS = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+    document.getElementById('svDays').innerHTML = DAYS.map(function (d, i) {
+      return '<label class="wd"><input type="checkbox" value="' + i + '" checked><span>' + d + '</span></label>';
+    }).join('');
+    function svcReset() {
+      document.getElementById('svId').value = '';
+      document.getElementById('svName').value = '';
+      document.getElementById('svCap').value = 60;
+      document.getElementById('svStart').value = '19:00';
+      document.getElementById('svEnd').value = '23:00';
+      document.getElementById('svMsg').textContent = '';
+      document.getElementById('svSave').textContent = 'Enregistrer le service';
+      svcModal.querySelectorAll('#svDays input').forEach(function (c) { c.checked = true; });
+    }
+    function renderSvcList() {
+      store.getServices().then(function (list) {
+        var el = document.getElementById('svcAdminList');
+        el.innerHTML = list.length ? list.map(function (s) {
+          return '<div class="svc-row' + (s.active === false ? ' off' : '') + '">' +
+            '<div><b>' + esc(s.name) + '</b><span>' + s.start_time + ' – ' + s.end_time + ' · ' + s.capacity + ' couverts</span>' +
+            '<i>' + (s.weekdays || []).map(function (i) { return DAYS[i]; }).join(' ') + '</i></div>' +
+            '<div><button class="mini" data-edit="' + s.id + '">Modifier</button>' +
+            '<button class="mini danger" data-del="' + s.id + '">Supprimer</button></div></div>';
+        }).join('') : '<p class="dl-empty">Aucun service. Créez-en un ci-dessous.</p>';
+        el.querySelectorAll('[data-edit]').forEach(function (b) {
+          b.onclick = function () {
+            var s = list.filter(function (x) { return x.id === b.getAttribute('data-edit'); })[0];
+            document.getElementById('svId').value = s.id;
+            document.getElementById('svName').value = s.name;
+            document.getElementById('svCap').value = s.capacity;
+            document.getElementById('svStart').value = s.start_time;
+            document.getElementById('svEnd').value = s.end_time;
+            document.getElementById('svSave').textContent = 'Mettre à jour';
+            svcModal.querySelectorAll('#svDays input').forEach(function (c) { c.checked = (s.weekdays || []).indexOf(+c.value) > -1; });
+          };
+        });
+        el.querySelectorAll('[data-del]').forEach(function (b) {
+          b.onclick = function () {
+            if (!confirm('Supprimer ce service ? Les réservations existantes ne seront pas supprimées.')) return;
+            store.deleteService(b.getAttribute('data-del')).then(function () { renderSvcList(); refresh(); });
+          };
+        });
+      });
+    }
+    document.getElementById('svcBtn').addEventListener('click', function () { renderSvcList(); svcReset(); svcModal.classList.add('open'); });
+    document.getElementById('svcClose').addEventListener('click', function () { svcModal.classList.remove('open'); });
+    svcModal.addEventListener('click', function (e) { if (e.target === svcModal) svcModal.classList.remove('open'); });
+    document.getElementById('svReset').addEventListener('click', svcReset);
+    document.getElementById('svcForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var m = document.getElementById('svMsg');
+      var wd = [].filter.call(svcModal.querySelectorAll('#svDays input'), function (c) { return c.checked; }).map(function (c) { return +c.value; });
+      if (!wd.length) { m.className = 'bk-msg err'; m.textContent = 'Choisissez au moins un jour.'; return; }
+      var s = {
+        id: document.getElementById('svId').value || null,
+        name: document.getElementById('svName').value.trim(),
+        start_time: document.getElementById('svStart').value,
+        end_time: document.getElementById('svEnd').value,
+        capacity: parseInt(document.getElementById('svCap').value, 10),
+        weekdays: wd, sort: 0, active: true
+      };
+      if (!s.name || isNaN(s.capacity)) { m.className = 'bk-msg err'; m.textContent = 'Nom et couverts requis.'; return; }
+      m.className = 'bk-msg'; m.textContent = 'Enregistrement…';
+      store.saveService(s).then(function (r) {
+        if (!r.ok) { m.className = 'bk-msg err'; m.textContent = r.reason || 'Erreur.'; return; }
+        m.className = 'bk-msg ok'; m.textContent = 'Service enregistré ✓';
+        svcReset(); renderSvcList(); refresh();
+      });
     });
 
     // Swipe latéral façon iPhone (sauf en vue Semaine qui défile à l'horizontale)
@@ -89,10 +154,27 @@
     var addModal = document.getElementById('addModal');
     var addFab = document.getElementById('addFab');
     addFab.hidden = false;
+    var aDate = document.getElementById('aDate');
+    function loadAddServices() {
+      return store.getDayServices(aDate.value).then(function (svcs) {
+        var sel = document.getElementById('aSvc');
+        sel.innerHTML = svcs.length
+          ? svcs.map(function (s) { return '<option value="' + s.service_id + '" data-start="' + s.start_time + '">' + s.name + ' (' + s.start_time + '–' + s.end_time + ')' + (s.closed ? ' — fermé' : ' · ' + s.remaining + ' libre') + '</option>'; }).join('')
+          : '<option value="">Aucun service ce jour</option>';
+        var o = sel.options[sel.selectedIndex];
+        if (o && o.getAttribute('data-start')) document.getElementById('aTime').value = o.getAttribute('data-start');
+      });
+    }
+    aDate.addEventListener('change', loadAddServices);
+    document.getElementById('aSvc').addEventListener('change', function () {
+      var o = this.options[this.selectedIndex];
+      if (o && o.getAttribute('data-start')) document.getElementById('aTime').value = o.getAttribute('data-start');
+    });
     function openAdd() {
       // pré-remplit avec le jour sélectionné (mois) ou le jour affiché
-      document.getElementById('aDate').value = (vView === 'month' && selDay) ? selDay : ymd(cursor);
+      aDate.value = (vView === 'month' && selDay) ? selDay : ymd(cursor);
       document.getElementById('addMsg').textContent = '';
+      loadAddServices();
       addModal.classList.add('open');
       setTimeout(function () { document.getElementById('aName').focus(); }, 100);
     }
@@ -106,20 +188,27 @@
       var m = document.getElementById('addMsg');
       var p = {
         date: document.getElementById('aDate').value,
+        serviceId: document.getElementById('aSvc').value,
         time: document.getElementById('aTime').value,
         name: document.getElementById('aName').value.trim(),
         phone: document.getElementById('aPhone').value.trim(),
         party: parseInt(document.getElementById('aParty').value, 10),
         note: document.getElementById('aNote').value.trim()
       };
-      if (!p.date || !p.time || !p.name || !p.phone || !p.party) {
-        m.className = 'bk-msg err'; m.textContent = 'Merci de remplir date, heure, nom, téléphone et personnes.'; return;
+      if (!p.date || !p.serviceId || !p.time || !p.name || !p.phone || !p.party) {
+        m.className = 'bk-msg err'; m.textContent = 'Merci de remplir date, service, heure, nom, téléphone et personnes.'; return;
       }
       var btn = document.getElementById('addSubmit'); btn.disabled = true;
       m.className = 'bk-msg'; m.textContent = 'Enregistrement…';
       store.createBooking(p).then(function (r) {
         btn.disabled = false;
-        if (!r.ok) { m.className = 'bk-msg err'; m.textContent = r.reason || 'Impossible d\'enregistrer.'; return; }
+        if (!r.ok) {
+          m.className = 'bk-msg err';
+          m.textContent = (r.reason === 'full')
+            ? 'Complet sur ce service — il ne reste que ' + (r.remaining || 0) + ' couvert(s).'
+            : (r.reason || 'Impossible d\'enregistrer.');
+          return;
+        }
         m.className = 'bk-msg ok'; m.textContent = 'Réservation ajoutée ✓';
         document.getElementById('addForm').reset();
         document.getElementById('aParty').value = 2;
@@ -166,30 +255,44 @@
   }
 
   function renderStats() {
-    store.bookings().then(function (list) {
-      var upcoming = list.filter(function (b) { return b.date >= today(); }).length;
-      var couvToday = list.filter(function (b) { return b.date === today(); }).reduce(function (s, b) { return s + b.party_size; }, 0);
-      document.getElementById('statResa').textContent = upcoming;
-      document.getElementById('statCouverts').textContent = couvToday;
+    store.upcoming().then(function (list) {
+      document.getElementById('statResa').textContent = list.length;
+      var couv = list.filter(function (b) { return b.date === today(); })
+        .reduce(function (s, b) { return s + b.party_size; }, 0);
+      document.getElementById('statCouverts').textContent = couv;
     });
   }
 
+  /* ---------- Barre des services du jour (capacité PAR SERVICE) ---------- */
   function renderCapBar() {
     var el = document.getElementById('dayCapInfo');
-    if (vView !== 'day') { el.innerHTML = '<span style="color:var(--cream-dim)">Astuce : cliquez un jour pour l\'ouvrir en vue Jour et ajuster ses couverts.</span>'; return; }
+    if (vView !== 'day') {
+      el.innerHTML = '<span style="color:var(--cream-dim)">Astuce : ouvrez un jour en vue <b>Jour</b> pour régler les couverts de chaque service.</span>';
+      return;
+    }
     var ds = ymd(cursor);
-    store.getDayInfo(ds).then(function (info) {
-      el.innerHTML =
-        '<label style="display:inline-flex;gap:.4rem">Couverts ce jour ' +
-        '<input type="number" min="0" id="dayCapIn" value="' + info.capacity + '" style="width:74px"></label> ' +
-        '<button class="mini" id="dayCapSave">Enregistrer</button> ' +
-        '<button class="mini' + (info.closed ? '' : ' danger') + '" id="dayClosedBtn">' + (info.closed ? 'Rouvrir le jour' : 'Fermer le jour') + '</button> ' +
-        '<span style="margin-left:.6rem;color:var(--gold-soft)">' + (info.closed ? 'Fermé' : info.booked + ' / ' + info.capacity + ' couverts · ' + info.remaining + ' restant') + '</span>';
-      document.getElementById('dayCapSave').onclick = function () {
-        var n = parseInt(document.getElementById('dayCapIn').value, 10); if (isNaN(n) || n < 0) return;
-        store.setDayCapacity(ds, n).then(refresh);
-      };
-      document.getElementById('dayClosedBtn').onclick = function () { store.setDayClosed(ds, !info.closed).then(refresh); };
+    store.getDayServices(ds).then(function (svcs) {
+      if (!svcs.length) { el.innerHTML = '<span style="color:var(--cream-dim)">Aucun service ce jour-là. Réglez-les via « Services ».</span>'; return; }
+      el.innerHTML = svcs.map(function (s) {
+        return '<span class="svc-chip' + (s.closed ? ' off' : '') + '">' +
+          '<b>' + esc(s.name) + '</b><i>' + s.start_time + '–' + s.end_time + '</i>' +
+          '<input type="number" min="0" value="' + s.capacity + '" data-cap="' + s.service_id + '" title="Couverts pour ce service">' +
+          '<em>' + (s.closed ? 'Fermé' : s.booked + '/' + s.capacity + ' · ' + s.remaining + ' libre') + '</em>' +
+          '<button class="mini" data-savecap="' + s.service_id + '">OK</button>' +
+          '<button class="mini' + (s.closed ? '' : ' danger') + '" data-close="' + s.service_id + '" data-v="' + (s.closed ? '0' : '1') + '">' + (s.closed ? 'Rouvrir' : 'Fermer') + '</button>' +
+          '</span>';
+      }).join('');
+      el.querySelectorAll('[data-savecap]').forEach(function (b) {
+        b.onclick = function () {
+          var id = b.getAttribute('data-savecap');
+          var n = parseInt(el.querySelector('[data-cap="' + id + '"]').value, 10);
+          if (isNaN(n) || n < 0) return;
+          store.setOverride(ds, id, { capacity: n }).then(refresh);
+        };
+      });
+      el.querySelectorAll('[data-close]').forEach(function (b) {
+        b.onclick = function () { store.setOverride(ds, b.getAttribute('data-close'), { closed: b.getAttribute('data-v') === '1' }).then(refresh); };
+      });
     });
   }
 
@@ -198,9 +301,9 @@
     var y = cursor.getFullYear(), m = cursor.getMonth();
     var gridStart = startOfWeek(new Date(y, m, 1));
     var gridEnd = addDays(gridStart, 41);
-    Promise.all([store.getRangeInfo(ymd(gridStart), ymd(gridEnd)), store.getBookingsRange(ymd(gridStart), ymd(gridEnd))])
+    Promise.all([store.getDaysAvailability(ymd(gridStart), ymd(gridEnd)), store.getBookingsRange(ymd(gridStart), ymd(gridEnd))])
       .then(function (res) {
-        var info = res[0]; monthByDate = groupByDate(res[1]);
+        var info = res[0]; monthByDate = groupByDate(indexBookings(res[1]));
         // jour sélectionné par défaut : aujourd'hui si dans le mois, sinon le 1er
         var inThisMonth = function (ds) { var d = new Date(ds + 'T00:00'); return d.getMonth() === m && d.getFullYear() === y; };
         if (!selDay || !inThisMonth(selDay)) selDay = inThisMonth(today()) ? today() : y + '-' + pad(m + 1) + '-01';
@@ -235,7 +338,7 @@
     var list = (monthByDate[selDay] || []).slice().sort(function (a, b) { return a.time < b.time ? -1 : 1; });
     var head = '<h5>' + new Date(selDay + 'T00:00').toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' }) + '</h5>';
     el.innerHTML = head + (list.length ? list.map(function (b) {
-      return '<div class="dl-item" data-id="' + b.id + '"><div class="dl-time">' + b.time + '</div>' +
+      return '<div class="dl-item' + (b.status === 'done' ? ' done' : '') + '" data-id="' + b.id + '"><div class="dl-time">' + b.time + '</div>' +
         '<div class="dl-main"><b>' + esc(b.name) + '</b><span>' + esc(b.phone) + (b.note ? ' · ' + esc(b.note) : '') + '</span></div>' +
         '<div class="dl-party">' + b.party_size + ' pers.</div></div>';
     }).join('') : '<p class="dl-empty">Aucune réservation ce jour.</p>');
@@ -246,7 +349,7 @@
   function renderDay() {
     var ds = ymd(cursor);
     store.getBookingsRange(ds, ds).then(function (list) {
-      renderTimeline([new Date(cursor)], groupByDate(list));
+      renderTimeline([new Date(cursor)], groupByDate(indexBookings(list)));
     });
   }
 
@@ -255,7 +358,7 @@
     var s = startOfWeek(cursor);
     var days = []; for (var i = 0; i < 7; i++) days.push(addDays(s, i));
     store.getBookingsRange(ymd(days[0]), ymd(days[6])).then(function (list) {
-      renderTimeline(days, groupByDate(list));
+      renderTimeline(days, groupByDate(indexBookings(list)));
     });
   }
 
@@ -281,7 +384,7 @@
       body += '<div class="tlx-col" data-day="' + ymd(d) + '" style="height:' + total + 'px">' +
         list.map(function (b) {
           var top = (toMin(b.time) - START_H * 60) / 60 * HH; if (top < 0) top = 0;
-          return '<div class="tlx-block" data-id="' + b.id + '" style="top:' + top + 'px;height:' + (HH - 6) + 'px">' +
+          return '<div class="tlx-block' + (b.status === 'done' ? ' done' : '') + '" data-id="' + b.id + '" style="top:' + top + 'px;height:' + (HH - 6) + 'px">' +
             '<b>' + esc(b.name) + '</b><span>' + b.time + ' · ' + b.party_size + '</span></div>';
         }).join('') + '</div>';
     });
@@ -306,7 +409,7 @@
   function renderYear() {
     var y = cursor.getFullYear();
     store.getBookingsRange(y + '-01-01', y + '-12-31').then(function (list) {
-      var byDate = groupByDate(list);
+      var byDate = groupByDate(indexBookings(list));
       var html = '<div class="yv-grid">';
       for (var m = 0; m < 12; m++) {
         var first = new Date(y, m, 1), off = (first.getDay() + 6) % 7, dim = new Date(y, m + 1, 0).getDate();
@@ -331,26 +434,65 @@
   function groupByDate(list) { var m = {}; list.forEach(function (b) { (m[b.date] = m[b.date] || []).push(b); }); return m; }
   function setActiveView(v) { [].forEach.call(document.getElementById('cxViews').children, function (x) { x.classList.toggle('active', x.getAttribute('data-v') === v); }); }
 
+  /* ---------- index des réservations chargées ---------- */
+  var bookingIndex = {};
+  function indexBookings(list) { list.forEach(function (b) { bookingIndex[b.id] = b; }); return list; }
+
   /* ---------- modal détail ---------- */
   var currentBooking = null;
   function openBooking(id) {
-    store.bookings().then(function (list) {
-      var b = list.filter(function (x) { return x.id === id; })[0]; if (!b) return;
-      currentBooking = b;
-      document.getElementById('rzTitle').textContent = esc(b.name);
-      document.getElementById('rzBody').innerHTML =
-        '<div class="line"><span>Date</span><span>' + frLong(b.date) + '</span></div>' +
-        '<div class="line"><span>Heure</span><span>' + b.time + '</span></div>' +
-        '<div class="line"><span>Personnes</span><span>' + b.party_size + '</span></div>' +
-        '<div class="line"><span>Téléphone</span><span>' + esc(b.phone) + '</span></div>' +
-        (b.note ? '<div class="line"><span>Note</span><span>' + esc(b.note) + '</span></div>' : '');
-      document.getElementById('rzModal').classList.add('open');
-    });
+    var b = bookingIndex[id]; if (!b) return;
+    currentBooking = b;
+    var done = b.status === 'done';
+    document.getElementById('rzTitle').textContent = b.name;
+    document.getElementById('rzBody').innerHTML =
+      '<div class="line"><span>Date</span><span>' + frLong(b.date) + '</span></div>' +
+      '<div class="line"><span>Heure</span><span>' + b.time + '</span></div>' +
+      '<div class="line"><span>Personnes</span><span>' + b.party_size + '</span></div>' +
+      '<div class="line"><span>Téléphone</span><span><a href="tel:' + esc(b.phone) + '" style="color:var(--gold)">' + esc(b.phone) + '</a></span></div>' +
+      (b.note ? '<div class="line"><span>Note</span><span>' + esc(b.note) + '</span></div>' : '') +
+      '<div class="line"><span>État</span><span>' + (done ? 'Terminée — couverts libérés' : 'En cours — occupe les couverts') + '</span></div>';
+    var dn = document.getElementById('rzDone');
+    dn.textContent = done ? 'Remettre en cours' : '✓ Terminée — libérer les couverts';
+    dn.className = done ? 'btn btn--ghost' : 'btn btn--gold';
+    document.getElementById('rzModal').classList.add('open');
   }
   function closeModal() { document.getElementById('rzModal').classList.remove('open'); currentBooking = null; }
+
+  // 1 clic : marquer terminée (libère les couverts) / remettre en cours
+  document.getElementById('rzDone').addEventListener('click', function () {
+    if (!currentBooking) return;
+    var next = currentBooking.status === 'done' ? 'confirmed' : 'done';
+    store.setBookingStatus(currentBooking.id, next).then(function () { closeModal(); refresh(); });
+  });
+
   document.getElementById('rzCancel').addEventListener('click', function () {
     if (!currentBooking) return;
-    if (!confirm('Annuler la réservation de ' + currentBooking.name + ' ?')) return;
+    if (!confirm('Annuler définitivement la réservation de ' + currentBooking.name + ' ?')) return;
     store.cancelBooking(currentBooking.id).then(function () { closeModal(); refresh(); });
   });
+
+  /* ---------- Liste « Réservations à venir » ---------- */
+  var upModal = document.getElementById('upModal');
+  document.getElementById('statResaBox').addEventListener('click', function () {
+    store.upcoming().then(function (list) {
+      var byDate = groupByDate(indexBookings(list));
+      var dates = Object.keys(byDate).sort();
+      document.getElementById('upBody').innerHTML = dates.length ? dates.map(function (d) {
+        return '<h5>' + frLong(d) + '</h5>' + byDate[d].map(function (b) {
+          return '<div class="dl-item' + (b.status === 'done' ? ' done' : '') + '" data-id="' + b.id + '"><div class="dl-time">' + b.time + '</div>' +
+            '<div class="dl-main"><b>' + esc(b.name) + '</b><span>' + esc(b.phone) + (b.note ? ' · ' + esc(b.note) : '') + '</span></div>' +
+            '<div class="dl-party">' + b.party_size + ' pers.</div></div>';
+        }).join('');
+      }).join('') : '<p class="dl-empty">Aucune réservation à venir.</p>';
+      upModal.querySelectorAll('.dl-item').forEach(function (it) {
+        it.addEventListener('click', function () { upModal.classList.remove('open'); openBooking(it.getAttribute('data-id')); });
+      });
+      upModal.classList.add('open');
+    });
+  });
+  document.getElementById('upClose').addEventListener('click', function () { upModal.classList.remove('open'); });
+  upModal.addEventListener('click', function (e) { if (e.target === upModal) upModal.classList.remove('open'); });
+
+  window.__indexBookings = indexBookings;
 })();
