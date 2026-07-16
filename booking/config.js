@@ -6,8 +6,8 @@
    Guide : booking/SETUP.md
    ========================================================= */
 window.COMPTOIR_CONFIG = {
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: "",
+  SUPABASE_URL: "https://ntybsfcciudyegvwzfcp.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_HBS-x89dj0M6NtsIPZEzsw_oWgVrOTi",
 
   RESTAURANT_NAME: "Le Comptoir",
   WHATSAPP: "2250798974607",
